@@ -4,12 +4,13 @@ import { packages, localize } from "@/lib/content";
 import { Link } from "@/navigation";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
+import { Section } from "@/components/ui/Section";
 
 export async function PackagesTeaser() {
   const locale = await getLocale();
   return (
-    <section className="relative overflow-hidden bg-background py-24 md:py-36">
-      <div className="absolute right-0 top-0 h-[500px] w-[500px] rounded-full bg-accent-2/5 blur-[150px]" />
+    <Section className="bg-background">
+      <div className="absolute right-0 top-0 h-[500px] w-[500px] rounded-full bg-accent-2/5 blur-[150px] pointer-events-none z-0" />
       <Container className="relative">
         <Reveal variant="mask-up">
           <span className="text-xs font-bold uppercase tracking-[0.25em] text-accent">{locale === "es" ? "Elige tu camino" : "Choose your path"}</span>
@@ -37,6 +38,6 @@ export async function PackagesTeaser() {
           ))}
         </div>
       </Container>
-    </section>
+    </Section>
   );
 }

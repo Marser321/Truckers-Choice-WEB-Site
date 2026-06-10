@@ -5,13 +5,14 @@ import { services, localize } from "@/lib/content";
 import { Link } from "@/navigation";
 import { InteriorHero } from "@/components/ui/InteriorHero";
 import { Container } from "@/components/ui/Container";
+import { Section } from "@/components/ui/Section";
 
 export default async function ServicesPage() {
   const locale = await getLocale();
   return (
     <main>
       <InteriorHero eyebrow={locale === "es" ? "Una mesa. Todo conectado." : "One desk. Everything connected."} title={locale === "es" ? "Servicios para mantener tu operación en marcha." : "Services built to keep your operation moving."} description={locale === "es" ? "Coordinamos seguros, permisos, autoridad, placas y cumplimiento para que no tengas que unir las piezas solo." : "We coordinate insurance, permits, authority, plates and compliance so you do not have to connect the pieces alone."} video={{ mp4: "/media/urban-loop.mp4", poster: "/images/media-posters/urban-loop.jpg" }} />
-      <section className="bg-background py-24">
+      <Section className="bg-background">
         <Container className="grid gap-5 md:grid-cols-2">
           {services.map((service, index) => (
             <Link key={service.slug} href={`/services/${service.slug}`} className="group relative overflow-hidden rounded-3xl border border-white/10 bg-surface p-8 transition-colors hover:border-accent/40 min-h-[320px] flex flex-col justify-between">
@@ -28,7 +29,7 @@ export default async function ServicesPage() {
             </Link>
           ))}
         </Container>
-      </section>
+      </Section>
     </main>
   );
 }
