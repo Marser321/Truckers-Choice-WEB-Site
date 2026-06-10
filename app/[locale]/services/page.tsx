@@ -1,4 +1,5 @@
 import { getLocale } from "next-intl/server";
+import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { services, localize } from "@/lib/content";
 import { Link } from "@/navigation";
@@ -13,11 +14,17 @@ export default async function ServicesPage() {
       <section className="bg-background py-24">
         <Container className="grid gap-5 md:grid-cols-2">
           {services.map((service, index) => (
-            <Link key={service.slug} href={`/services/${service.slug}`} className="group rounded-3xl border border-white/10 bg-surface/40 p-8 transition-colors hover:border-accent/40">
-              <span className="font-display text-5xl font-bold text-white/10">0{index + 1}</span>
-              <h2 className="mt-8 font-display text-3xl font-bold text-text">{localize(service.title, locale)}</h2>
-              <p className="mt-4 text-sm leading-relaxed text-text-muted">{localize(service.description, locale)}</p>
-              <span className="mt-7 inline-flex items-center gap-2 text-sm font-bold text-accent">{locale === "es" ? "Ver servicio" : "View service"} <ArrowRight className="h-4 w-4" /></span>
+            <Link key={service.slug} href={`/services/${service.slug}`} className="group relative overflow-hidden rounded-3xl border border-white/10 bg-surface p-8 transition-colors hover:border-accent/40 min-h-[320px] flex flex-col justify-between">
+              <Image src={service.cardImage} alt="" fill className="object-cover object-right opacity-30 transition-transform duration-700 group-hover:scale-105" sizes="(min-width: 768px) 50vw, 100vw" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#050810]/95 via-[#050810]/80 to-transparent z-10 pointer-events-none" />
+              <div className="relative z-20 flex flex-col h-full justify-between">
+                <div>
+                  <span className="font-display text-5xl font-bold text-white/10">0{index + 1}</span>
+                  <h2 className="mt-8 font-display text-3xl font-bold text-text">{localize(service.title, locale)}</h2>
+                  <p className="mt-4 text-sm leading-relaxed text-text-muted">{localize(service.description, locale)}</p>
+                </div>
+                <span className="mt-7 inline-flex items-center gap-2 text-sm font-bold text-accent">{locale === "es" ? "Ver servicio" : "View service"} <ArrowRight className="h-4 w-4" /></span>
+              </div>
             </Link>
           ))}
         </Container>

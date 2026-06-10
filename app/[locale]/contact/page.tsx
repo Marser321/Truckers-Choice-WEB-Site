@@ -9,7 +9,7 @@ export default async function ContactPage() {
   const locale = await getLocale();
   return (
     <main>
-      <InteriorHero eyebrow={locale === "es" ? "Empieza la conversación" : "Start the conversation"} title={locale === "es" ? "Cuéntanos qué te está frenando." : "Tell us what is holding you back."} description={locale === "es" ? "Un formulario corto para ordenar el próximo paso. También puedes llamar directamente a cualquiera de nuestras oficinas." : "A short form to organize the next step. You can also call any of our offices directly."} />
+      <InteriorHero eyebrow={locale === "es" ? "Empieza la conversación" : "Start the conversation"} title={locale === "es" ? "Cuéntanos qué te está frenando." : "Tell us what is holding you back."} description={locale === "es" ? "Un formulario corto para ordenar el próximo paso. También puedes llamar directamente a cualquiera de nuestras oficinas." : "A short form to organize the next step. You can also call any of our offices directly."} image="/images/bg-contact.png" />
       <section className="bg-background py-20">
         <Container className="grid gap-10 lg:grid-cols-12">
           <div className="lg:col-span-8"><QuoteWizard /></div>
