@@ -1,0 +1,27 @@
+import { getLocale } from "next-intl/server";
+import { ArrowRight } from "lucide-react";
+import { services, localize } from "@/lib/content";
+import { Link } from "@/navigation";
+import { InteriorHero } from "@/components/ui/InteriorHero";
+import { Container } from "@/components/ui/Container";
+
+export default async function ServicesPage() {
+  const locale = await getLocale();
+  return (
+    <main>
+      <InteriorHero eyebrow={locale === "es" ? "Una mesa. Todo conectado." : "One desk. Everything connected."} title={locale === "es" ? "Servicios para mantener tu operación en marcha." : "Services built to keep your operation moving."} description={locale === "es" ? "Coordinamos seguros, permisos, autoridad, placas y cumplimiento para que no tengas que unir las piezas solo." : "We coordinate insurance, permits, authority, plates and compliance so you do not have to connect the pieces alone."} video={{ mp4: "/media/urban-loop.mp4", poster: "/images/media-posters/urban-loop.jpg" }} />
+      <section className="bg-background py-24">
+        <Container className="grid gap-5 md:grid-cols-2">
+          {services.map((service, index) => (
+            <Link key={service.slug} href={`/services/${service.slug}`} className="group rounded-3xl border border-white/10 bg-surface/40 p-8 transition-colors hover:border-accent/40">
+              <span className="font-display text-5xl font-bold text-white/10">0{index + 1}</span>
+              <h2 className="mt-8 font-display text-3xl font-bold text-text">{localize(service.title, locale)}</h2>
+              <p className="mt-4 text-sm leading-relaxed text-text-muted">{localize(service.description, locale)}</p>
+              <span className="mt-7 inline-flex items-center gap-2 text-sm font-bold text-accent">{locale === "es" ? "Ver servicio" : "View service"} <ArrowRight className="h-4 w-4" /></span>
+            </Link>
+          ))}
+        </Container>
+      </section>
+    </main>
+  );
+}

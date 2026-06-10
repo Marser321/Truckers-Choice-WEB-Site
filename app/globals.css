@@ -2,32 +2,124 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --background: 224 48% 5%;       /* #070B14 */
+    --foreground: 220 38% 96%;      /* #F2F5FA */
+
+    --card: 222 44% 10%;           /* #0F1626 */
+    --card-foreground: 220 38% 96%;
+
+    --popover: 222 44% 10%;
+    --popover-foreground: 220 38% 96%;
+
+    --primary: 38 100% 56%;        /* #FFB020 (Amber Accent) */
+    --primary-foreground: 224 48% 5%;
+
+    --secondary: 217 100% 59%;      /* #2E7DFF (Blue Accent 2) */
+    --secondary-foreground: 220 38% 96%;
+
+    --muted: 223 13% 60%;          /* #8B93A7 */
+    --muted-foreground: 223 13% 60%;
+
+    --accent: 38 100% 56%;
+    --accent-foreground: 224 48% 5%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 220 38% 96%;
+
+    --border: 220 15% 15%;         /* rgba(255,255,255,.08) */
+    --input: 220 15% 15%;
+    --ring: 38 100% 56%;
+
+    --radius: 20px;                /* xl = 20px */
+
+    --surface: 222 44% 10%;        /* #0F1626 */
+    --surface-2: 221 41% 14%;      /* #141C30 */
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html, body {
+    background-color: #070B14;
+    color: #F2F5FA;
+    font-family: var(--font-body), sans-serif;
+  }
+
+  html {
+    scroll-padding-top: 5rem;
+  }
+
+  body {
+    @apply bg-background text-foreground relative min-h-screen overflow-x-hidden;
+  }
+
+  :focus-visible {
+    outline: 2px solid #FFB020;
+    outline-offset: 4px;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display), sans-serif;
+    font-weight: 600;
+  }
 }
 
 @layer utilities {
+  .editorial-grid {
+    background-image:
+      linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+
   .text-balance {
     text-wrap: balance;
   }
+}
+
+/* Utilidad de glassmorphism */
+.glass {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Sombra glow ámbar para CTAs/hover */
+.shadow-glow-amber {
+  box-shadow: 0 0 20px rgba(255, 176, 32, 0.3);
+}
+
+.shadow-glow-amber-hover {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.shadow-glow-amber-hover:hover {
+  box-shadow: 0 0 30px rgba(255, 176, 32, 0.55);
+}
+
+/* Custom smooth scroll behaviors with Lenis */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
 }
