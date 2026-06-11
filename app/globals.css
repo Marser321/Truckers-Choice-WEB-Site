@@ -13,6 +13,10 @@
     --primitive-amber: 38 100% 56%;
     --primitive-blue: 217 100% 59%;
     --primitive-red: 0 84% 60%;
+    --primitive-tracking-display: -0.018em;
+    --primitive-tracking-heading: -0.012em;
+    --primitive-leading-display: 1.02;
+    --primitive-leading-heading: 1.12;
 
     /* Semantic tokens */
     --color-canvas: var(--primitive-navy-950);
@@ -23,6 +27,10 @@
     --color-action: var(--primitive-amber);
     --color-information: var(--primitive-blue);
     --color-risk: var(--primitive-red);
+    --type-display-tracking: var(--primitive-tracking-display);
+    --type-heading-tracking: var(--primitive-tracking-heading);
+    --type-display-leading: var(--primitive-leading-display);
+    --type-heading-leading: var(--primitive-leading-heading);
 
     /* Component tokens */
     --catalog-card-bg: hsl(var(--color-surface) / 0.55);
@@ -51,6 +59,8 @@
     --section-wash-start: hsl(var(--color-canvas) / 0.98);
     --section-wash-middle: hsl(var(--color-canvas) / 0.78);
     --section-wash-end: hsl(var(--color-canvas) / 0.9);
+    --section-edge-top: hsl(var(--color-canvas) / 0.78);
+    --section-edge-bottom: hsl(var(--color-canvas) / 0.9);
 
     --background: 224 48% 5%;       /* #070B14 */
     --foreground: 220 38% 96%;      /* #F2F5FA */
@@ -114,6 +124,7 @@
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display), sans-serif;
     font-weight: 600;
+    letter-spacing: var(--type-heading-tracking);
   }
 }
 
@@ -131,6 +142,50 @@
 }
 
 @layer components {
+  .type-hero {
+    font-family: var(--font-display), sans-serif;
+    font-size: clamp(3rem, 7vw, 6.8rem);
+    font-weight: 800;
+    letter-spacing: var(--type-display-tracking);
+    line-height: var(--type-display-leading);
+  }
+
+  .type-hero--compact {
+    font-size: clamp(2.5rem, 5.4vw, 5rem);
+  }
+
+  .type-section {
+    font-family: var(--font-display), sans-serif;
+    font-size: clamp(2.25rem, 5vw, 4rem);
+    font-weight: 700;
+    letter-spacing: var(--type-heading-tracking);
+    line-height: var(--type-heading-leading);
+  }
+
+  .type-card {
+    font-family: var(--font-display), sans-serif;
+    font-weight: 650;
+    letter-spacing: -0.008em;
+    line-height: 1.2;
+  }
+
+  .type-lead {
+    font-family: var(--font-body), sans-serif;
+    font-size: clamp(1rem, 1.4vw, 1.2rem);
+    font-weight: 400;
+    line-height: 1.72;
+  }
+
+  .type-kicker {
+    color: hsl(var(--color-action));
+    font-family: var(--font-body), sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    line-height: 1.4;
+    text-transform: uppercase;
+  }
+
   .section-background {
     position: absolute;
     inset: 0;
@@ -158,6 +213,13 @@
       linear-gradient(180deg, hsl(var(--color-canvas) / 0.88), transparent 35%, hsl(var(--color-canvas) / 0.94));
   }
 
+  .section-background::after {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, var(--section-edge-top), transparent 18%, transparent 82%, var(--section-edge-bottom));
+    content: "";
+  }
+
   .section-background__grid {
     background-image:
       linear-gradient(hsl(var(--color-copy) / 0.025) 1px, transparent 1px),
@@ -169,6 +231,28 @@
 
   .section-background__glow {
     opacity: 0.55;
+  }
+
+  .section-background[data-density="quiet"] {
+    --section-grid-opacity: 0.12;
+    --section-image-opacity: 0.1;
+  }
+
+  .section-background[data-density="rich"] {
+    --section-grid-opacity: 0.34;
+    --section-image-opacity: 0.28;
+  }
+
+  .section-background[data-transition="none"]::after {
+    display: none;
+  }
+
+  .section-background[data-transition="top"] {
+    --section-edge-bottom: transparent;
+  }
+
+  .section-background[data-transition="bottom"] {
+    --section-edge-top: transparent;
   }
 
   .section-background__glow--primary {
@@ -188,6 +272,19 @@
     background: hsl(var(--color-surface) / 0.24);
     --section-image-opacity: 0;
     --section-grid-opacity: 0.3;
+  }
+
+  .section-background--cinematic {
+    --section-image-opacity: 0.28;
+    --section-wash-middle: hsl(var(--color-canvas) / 0.68);
+    --section-wash-end: hsl(var(--color-canvas) / 0.62);
+  }
+
+  .section-background--functional {
+    background: hsl(var(--color-surface) / 0.2);
+    --section-image-opacity: 0;
+    --section-grid-opacity: 0.16;
+    --section-wash-middle: hsl(var(--color-canvas) / 0.9);
   }
 
   :is(.section-background--document, .section-background--route, .section-background--local) {
@@ -300,7 +397,7 @@
     font-size: clamp(3rem, 7vw, 5.5rem);
     font-weight: 700;
     line-height: 1;
-    letter-spacing: -0.06em;
+    letter-spacing: -0.02em;
     pointer-events: none;
   }
 
@@ -409,7 +506,7 @@
     color: hsl(var(--color-action));
     font-size: 0.75rem;
     font-weight: 700;
-    letter-spacing: 0.22em;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
   }
 }

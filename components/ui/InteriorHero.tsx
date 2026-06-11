@@ -63,16 +63,16 @@ export function InteriorHero({
       )}
       <div className="absolute inset-0 editorial-grid opacity-40" />
       <Container className="relative z-10">
-        <span className="text-xs font-bold uppercase tracking-[0.28em] text-accent">{eyebrow}</span>
+        <span className="type-kicker">{eyebrow}</span>
         <h1
           className={cn(
-            "mt-6 max-w-5xl text-balance font-display font-bold leading-[0.92] tracking-[-0.05em] text-text",
-            compact ? "text-4xl md:text-6xl" : "text-5xl md:text-8xl"
+            "type-hero mt-6 max-w-5xl text-balance text-text",
+            compact ? "type-hero--compact" : ""
           )}
         >
           {title}
         </h1>
-        <p className="mt-7 max-w-2xl text-base leading-relaxed text-text-muted md:text-lg">{description}</p>
+        <p className="type-lead mt-7 max-w-2xl text-text-muted">{description}</p>
       </Container>
     </section>
   );

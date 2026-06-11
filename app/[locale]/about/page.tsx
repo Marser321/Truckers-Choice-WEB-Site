@@ -76,7 +76,7 @@ export default async function AboutPage({
   ];
 
   return (
-    <main className="relative min-h-screen flex flex-col bg-background">
+    <main className="relative min-h-screen flex flex-col overflow-hidden bg-background">
       {/* Background decorations */}
       <div className="pointer-events-none absolute top-1/4 left-0 h-[600px] w-[600px] rounded-full bg-accent/5 blur-[130px] z-0" />
       <div className="pointer-events-none absolute bottom-1/4 right-0 h-[500px] w-[500px] rounded-full bg-secondary/5 blur-[120px] z-0" />
@@ -89,7 +89,7 @@ export default async function AboutPage({
             <Badge variant="amber" className="w-fit px-4 py-1.5 font-semibold text-xs tracking-wider">
               {t("eyebrow")}
             </Badge>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight font-display text-text leading-tight">
+            <h1 className="type-hero type-hero--compact text-text">
               {t("hero_title")}
             </h1>
             <p className="text-base sm:text-lg text-text-muted font-body leading-relaxed">
@@ -119,7 +119,7 @@ export default async function AboutPage({
         <Container className="flex flex-col gap-12 max-w-6xl mx-auto">
           <div className="text-center max-w-2xl mx-auto flex flex-col gap-3">
             <Badge variant="amber" className="mx-auto w-fit">VALUES</Badge>
-            <h2 className="text-3xl md:text-4xl font-bold font-display text-text">
+            <h2 className="type-section text-text">
               {t("values_title")}
             </h2>
           </div>
@@ -155,7 +155,7 @@ export default async function AboutPage({
         <Container className="flex flex-col gap-16 max-w-4xl mx-auto">
           <div className="text-center flex flex-col gap-3">
             <Badge variant="amber" className="mx-auto w-fit">TIMELINE</Badge>
-            <h2 className="text-3xl md:text-4xl font-bold font-display text-text">
+            <h2 className="type-section text-text">
               {t("timeline_title")}
             </h2>
           </div>
@@ -202,7 +202,7 @@ export default async function AboutPage({
         <Container className="flex flex-col gap-12 max-w-6xl mx-auto text-center">
           <div className="max-w-2xl mx-auto flex flex-col gap-3">
             <Badge variant="amber" className="mx-auto w-fit">WHY TRUCKERS CHOICE</Badge>
-            <h2 className="text-3xl md:text-4xl font-bold font-display text-text">
+            <h2 className="type-section text-text">
               {t("trust_title")}
             </h2>
             <p className="text-sm sm:text-base text-text-muted font-body leading-relaxed">
@@ -225,7 +225,7 @@ export default async function AboutPage({
                 <div className="p-3 rounded-full bg-accent/5 text-accent mb-2">
                   <Landmark className="w-6 h-6" />
                 </div>
-                <h3 className="text-xs font-black tracking-widest text-text uppercase">
+                <h3 className="text-xs font-bold tracking-[0.14em] text-text uppercase">
                   {badge.label}
                 </h3>
                 <p className="text-[10px] text-accent font-semibold uppercase">
@@ -243,7 +243,7 @@ export default async function AboutPage({
       {/* CTA Section */}
       <Section className="relative z-10 py-16 md:py-28 bg-gradient-to-b from-transparent to-[#0F1626]/40 border-t border-white/5" background="route" backgroundPosition="center right">
         <Container className="max-w-4xl mx-auto text-center flex flex-col items-center gap-6">
-          <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight font-display text-text">
+          <h2 className="type-section text-text">
             {t("cta_title")}
           </h2>
           <p className="text-base sm:text-lg text-text-muted font-body leading-relaxed max-w-xl">

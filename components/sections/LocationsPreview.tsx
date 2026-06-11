@@ -15,8 +15,8 @@ export async function LocationsPreview() {
       <SectionBackground variant="local" imagePosition="center right" />
       <Container className="relative z-10">
         <Reveal variant="mask-up">
-          <span className="text-xs font-bold uppercase tracking-[0.25em] text-accent">{locale === "es" ? "Atención local" : "Local support"}</span>
-          <h2 className="mt-4 max-w-4xl text-balance font-display text-4xl font-bold leading-none tracking-[-0.04em] text-text md:text-6xl">
+          <span className="type-kicker">{locale === "es" ? "Atención local" : "Local support"}</span>
+          <h2 className="type-section mt-4 max-w-4xl text-balance text-text">
             {locale === "es" ? "Tres oficinas. El mismo equipo bilingüe." : "Three offices. One bilingual standard."}
           </h2>
         </Reveal>
@@ -29,7 +29,7 @@ export async function LocationsPreview() {
                   <div className="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent" />
                 </div>
                 <div className="p-6">
-                  <h3 className="font-display text-2xl font-bold text-text">{location.name}</h3>
+                  <h3 className="type-card text-2xl text-text">{location.name}</h3>
                   <p className="mt-3 text-sm leading-relaxed text-text-muted">{localize(location.description, locale)}</p>
                   <div className="mt-5 flex items-center justify-between border-t border-white/8 pt-5">
                     <a href={`tel:${location.phoneRaw}`} className="inline-flex items-center gap-2 text-xs font-semibold text-text"><Phone className="h-4 w-4 text-accent" />{location.phone}</a>

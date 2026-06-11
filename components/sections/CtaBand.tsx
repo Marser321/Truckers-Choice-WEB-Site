@@ -23,8 +23,8 @@ export async function CtaBand() {
         <div className="absolute left-1/2 top-1/2 h-[58%] w-[72%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#050810]/28 blur-[90px]" />
       </div>
       <Container className="relative z-10 flex min-h-[78vh] flex-col items-center justify-center text-center">
-        <span className="text-xs font-bold uppercase tracking-[0.3em] text-accent">{locale === "es" ? "Tu próxima carga empieza aquí" : "Your next load starts here"}</span>
-        <h2 className="mt-6 max-w-5xl text-balance font-display text-5xl font-bold leading-[0.9] tracking-[-0.05em] text-text md:text-8xl">
+        <span className="type-kicker">{locale === "es" ? "Tu próxima carga empieza aquí" : "Your next load starts here"}</span>
+        <h2 className="type-hero mt-6 max-w-5xl text-balance text-text">
           {locale === "es" ? "Menos papeleo. Más carretera." : "Less paperwork. More road."}
         </h2>
         <p className="mt-6 max-w-xl text-base leading-relaxed text-text-muted">{locale === "es" ? "Cuéntanos qué estás tratando de resolver. Te ayudamos a ordenar el próximo paso." : "Tell us what you are trying to solve. We will help organize the next step."}</p>

@@ -21,7 +21,7 @@ export default async function LocationsIndexPage() {
         overlay="soft"
       />
       <section className="relative overflow-hidden bg-background py-20 md:py-28">
-        <SectionBackground variant="local" imagePosition="center right" />
+        <SectionBackground variant="local" imagePosition="center right" density="rich" />
         <Container className="relative z-10 grid gap-6 lg:grid-cols-3">
           {locations.map((location) => (
             <article key={location.slug} className="catalog-card group overflow-hidden">
@@ -30,7 +30,7 @@ export default async function LocationsIndexPage() {
                 <div className="absolute inset-0 bg-gradient-to-t from-[#050810] via-transparent to-transparent" />
               </div>
               <div className="p-7">
-                <h1 className="font-display text-3xl font-bold text-text">{location.name}</h1>
+                <h2 className="type-card text-3xl text-text">{location.name}</h2>
                 <p className="mt-4 text-sm leading-relaxed text-text-muted">{localize(location.description, locale)}</p>
                 <div className="mt-7 space-y-4 border-t border-white/8 pt-6 text-sm text-text-muted">
                   <p className="flex gap-3"><MapPin className="h-5 w-5 shrink-0 text-accent" />{location.address}</p>

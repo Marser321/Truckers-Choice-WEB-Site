@@ -92,7 +92,7 @@ export function HowItWorks() {
             </Reveal>
 
             <Reveal delay={0.2} yOffset={25}>
-              <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight font-display text-text leading-tight">
+              <h2 className="type-section text-text">
                 {t("title")}
               </h2>
             </Reveal>
@@ -128,7 +128,7 @@ export function HowItWorks() {
                     className="relative flex flex-row lg:flex-col items-start lg:items-center text-left lg:text-center gap-6 lg:gap-4 lg:w-1/4 group"
                   >
                     {/* Big faded number background */}
-                    <span className="absolute -top-8 left-16 lg:left-auto lg:-top-12 font-display font-black text-6xl sm:text-7xl text-white/[0.03] select-none pointer-events-none group-hover:text-accent/[0.05] transition-colors duration-500">
+                    <span className="absolute -top-8 left-16 select-none font-display text-6xl font-extrabold tracking-[-0.02em] text-white/[0.03] transition-colors duration-500 pointer-events-none group-hover:text-accent/[0.05] sm:text-7xl lg:left-auto lg:-top-12">
                       0{step.id}
                     </span>
 

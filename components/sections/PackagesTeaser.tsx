@@ -13,8 +13,8 @@ export async function PackagesTeaser() {
       <div className="absolute right-0 top-0 h-[500px] w-[500px] rounded-full bg-accent-2/5 blur-[150px] pointer-events-none z-0" />
       <Container className="relative">
         <Reveal variant="mask-up">
-          <span className="text-xs font-bold uppercase tracking-[0.25em] text-accent">{locale === "es" ? "Elige tu camino" : "Choose your path"}</span>
-          <h2 className="mt-4 max-w-4xl text-balance font-display text-4xl font-bold leading-none tracking-[-0.04em] text-text md:text-6xl">
+          <span className="type-kicker">{locale === "es" ? "Elige tu camino" : "Choose your path"}</span>
+          <h2 className="type-section mt-4 max-w-4xl text-balance text-text">
             {locale === "es" ? "No necesitas comprar trámites. Necesitas un plan." : "You do not need a pile of filings. You need a plan."}
           </h2>
         </Reveal>
@@ -22,8 +22,8 @@ export async function PackagesTeaser() {
           {packages.map((item, index) => (
             <Reveal key={item.slug} delay={index * 0.07}>
               <article className="h-full rounded-3xl border border-white/10 bg-surface/45 p-7 transition-colors hover:border-accent/35">
-                <p className="text-xs font-bold uppercase tracking-[0.2em] text-accent">{localize(item.bestFor, locale)}</p>
-                <h3 className="mt-4 font-display text-3xl font-bold text-text">{localize(item.title, locale)}</h3>
+                <p className="type-kicker">{localize(item.bestFor, locale)}</p>
+                <h3 className="type-card mt-4 text-3xl text-text">{localize(item.title, locale)}</h3>
                 <p className="mt-4 text-sm leading-relaxed text-text-muted">{localize(item.description, locale)}</p>
                 <div className="mt-7 grid gap-3 sm:grid-cols-2">
                   {item.includes.map((included) => (

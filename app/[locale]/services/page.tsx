@@ -22,13 +22,13 @@ export default async function ServicesPage() {
       <InteriorHero eyebrow={locale === "es" ? "Una mesa. Todo conectado." : "One desk. Everything connected."} title={locale === "es" ? "Servicios para mantener tu operación en marcha." : "Services built to keep your operation moving."} description={locale === "es" ? "Coordinamos seguros, permisos, autoridad, placas y cumplimiento para que no tengas que unir las piezas solo." : "We coordinate insurance, permits, authority, plates and compliance so you do not have to connect the pieces alone."} video={{ mp4: "/media/urban-loop.mp4", poster: "/images/media-posters/urban-loop.jpg" }} />
 
       <section className="relative hidden overflow-hidden border-b border-white/5 bg-background pt-10 pb-6 md:block">
-        <SectionBackground variant="route" imagePosition="center right" />
+        <SectionBackground variant="route" imagePosition="center right" density="quiet" transition="bottom" />
         <Container className="relative z-10">
           <JourneyTimeline />
         </Container>
       </section>
 
-      <Section className="bg-background" background="route" backgroundPosition="center right">
+      <Section className="bg-background" background="route" backgroundPosition="center right" backgroundDensity="rich">
         <Container className="flex flex-col gap-16">
           {journeyStages.map(({ stage, number, label }) => {
             const stageServices = services.filter((service) => service.journey === stage);
@@ -37,7 +37,7 @@ export default async function ServicesPage() {
               <div key={stage}>
                 <div className="flex items-baseline gap-4">
                   <span className="font-display text-sm font-bold text-accent">{number}</span>
-                  <h2 className="font-display text-2xl font-bold text-text md:text-3xl">
+                  <h2 className="type-card text-2xl text-text md:text-3xl">
                     {locale === "es" ? label.es : label.en}
                   </h2>
                 </div>
@@ -51,7 +51,7 @@ export default async function ServicesPage() {
                         <div className="relative z-20 flex flex-col h-full justify-between">
                           <div>
                             <span className="font-display text-5xl font-bold text-white/10">0{index + 1}</span>
-                            <h3 className="mt-8 font-display text-3xl font-bold text-text">{localize(service.title, locale)}</h3>
+                            <h3 className="type-card mt-8 text-3xl text-text">{localize(service.title, locale)}</h3>
                             <p className="mt-4 text-sm leading-relaxed text-text-muted">{localize(service.description, locale)}</p>
                             <p className="mt-6 text-xs font-bold uppercase tracking-[0.18em] text-accent">
                               {service.details.length} {locale === "es" ? "tramites confirmados" : "confirmed filings"}

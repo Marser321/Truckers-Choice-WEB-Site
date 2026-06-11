@@ -1,5 +1,4 @@
-import { Inter } from "next/font/google";
-import localFont from "next/font/local";
+import { Inter, Manrope } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -15,27 +14,13 @@ import "../globals.css";
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-body",
+  display: "swap",
 });
 
-const clashDisplay = localFont({
-  src: [
-    {
-      path: "../../public/fonts/ClashDisplay-Medium.woff2",
-      weight: "500",
-      style: "normal",
-    },
-    {
-      path: "../../public/fonts/ClashDisplay-Semibold.woff2",
-      weight: "600",
-      style: "normal",
-    },
-    {
-      path: "../../public/fonts/ClashDisplay-Bold.woff2",
-      weight: "700",
-      style: "normal",
-    },
-  ],
+const manrope = Manrope({
+  subsets: ["latin"],
   variable: "--font-display",
+  display: "swap",
 });
 
 export async function generateMetadata({
@@ -91,7 +76,7 @@ export default async function LocaleLayout({
   const tNav = await getTranslations({ locale, namespace: "nav" });
 
   return (
-    <html lang={locale} className={`${clashDisplay.variable} ${inter.variable}`}>
+    <html lang={locale} className={`${manrope.variable} ${inter.variable}`}>
       <body className="antialiased min-h-screen">
         <a
           href="#main-content"

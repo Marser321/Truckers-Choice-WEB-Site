@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import {
   SectionBackground,
   type SectionBackgroundVariant,
+  type SectionBackgroundDensity,
 } from "@/components/ui/SectionBackground";
 
 interface SectionProps {
@@ -12,6 +13,8 @@ interface SectionProps {
   background?: SectionBackgroundVariant;
   backgroundImage?: string;
   backgroundPosition?: string;
+  backgroundDensity?: SectionBackgroundDensity;
+  backgroundTransition?: "none" | "top" | "bottom" | "both";
 }
 
 export function Section({
@@ -21,6 +24,8 @@ export function Section({
   background = "canvas",
   backgroundImage,
   backgroundPosition,
+  backgroundDensity,
+  backgroundTransition,
 }: SectionProps) {
   return (
     <section
@@ -34,6 +39,8 @@ export function Section({
         variant={background}
         image={backgroundImage}
         imagePosition={backgroundPosition}
+        density={backgroundDensity}
+        transition={backgroundTransition}
       />
       <div className="relative z-10 w-full h-full">
         {children}

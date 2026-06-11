@@ -146,7 +146,7 @@ export function RoadStory() {
                   <p className="text-xs font-bold uppercase tracking-[0.25em] text-text-muted">
                     {t("chapterLabel")} 0{active + 1} <span aria-hidden="true">/</span> 0{chapters.length}
                   </p>
-                  <h2 className="mt-5 text-balance font-display text-6xl font-bold leading-[0.95] tracking-[-0.04em] text-text">
+                  <h2 className="type-section mt-5 max-w-2xl text-balance text-text">
                     {t(`${current.key}_title`)}
                   </h2>
                   <p className="mt-6 max-w-xl text-lg leading-relaxed text-text-muted">{t(`${current.key}_body`)}</p>

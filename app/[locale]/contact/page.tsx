@@ -11,7 +11,7 @@ export default async function ContactPage() {
   return (
     <main>
       <InteriorHero eyebrow={locale === "es" ? "Empieza la conversación" : "Start the conversation"} title={locale === "es" ? "Cuéntanos qué te está frenando." : "Tell us what is holding you back."} description={locale === "es" ? "Un formulario corto para ordenar el próximo paso. También puedes llamar directamente a cualquiera de nuestras oficinas." : "A short form to organize the next step. You can also call any of our offices directly."} image="/images/bg-contact.png" />
-      <Section className="bg-background" background="route" backgroundPosition="center right">
+      <Section className="bg-background" background="functional" backgroundDensity="quiet">
         <Container className="grid gap-10 lg:grid-cols-12">
           <div className="lg:col-span-8"><QuoteWizard /></div>
           <aside className="space-y-4 lg:col-span-4">

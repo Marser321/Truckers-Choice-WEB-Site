@@ -14,7 +14,7 @@ export default async function ResourcePage({ params: { locale, slug } }: { param
   return (
     <main>
       <InteriorHero eyebrow={`${localize(resource.eyebrow, locale)} · ${localize(resource.readingTime, locale)}`} title={localize(resource.title, locale)} description={localize(resource.description, locale)} image="/images/bg-operational-documents.webp" imagePosition="center right" overlay="soft" />
-      <article className="relative overflow-hidden bg-background py-20"><SectionBackground variant="document" imagePosition="center right" /><Container className="relative z-10 max-w-3xl space-y-14">{resource.sections.map((section, index) => <section key={section.title.en}><span className="font-display text-5xl font-bold text-white/10">0{index + 1}</span><h2 className="mt-5 font-display text-3xl font-bold text-text">{localize(section.title, locale)}</h2><p className="mt-5 text-base leading-8 text-text-muted">{localize(section.body, locale)}</p></section>)}</Container></article>
+      <article className="relative overflow-hidden bg-background py-20"><SectionBackground variant="document" imagePosition="center right" density="quiet" /><Container className="relative z-10 max-w-3xl space-y-14">{resource.sections.map((section, index) => <section key={section.title.en}><span className="font-display text-5xl font-bold tracking-[-0.02em] text-white/10">0{index + 1}</span><h2 className="type-card mt-5 text-3xl text-text">{localize(section.title, locale)}</h2><p className="mt-5 text-base leading-8 text-text-muted">{localize(section.body, locale)}</p></section>)}</Container></article>
     </main>
   );
 }

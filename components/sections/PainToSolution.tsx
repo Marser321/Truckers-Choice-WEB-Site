@@ -76,7 +76,7 @@ export function PainToSolution() {
               <p className="text-xs font-bold uppercase tracking-[0.25em] text-red-400">{locale === "es" ? "Lo que detiene el camión" : "What stops the truck"}</p>
               <AnimatePresence mode="wait">
                 <motion.div key={current.slug} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -30 }} transition={{ duration: 0.5, ease: motionEase }}>
-                  <h2 className="mt-5 text-balance font-display text-5xl font-bold leading-[0.95] tracking-[-0.04em] text-text">{localize(current.urgency, locale)}</h2>
+                  <h2 className="type-section mt-5 text-balance text-text">{localize(current.urgency, locale)}</h2>
                   <div className="my-8 h-px bg-gradient-to-r from-red-400/50 via-accent/50 to-transparent" />
                   <p className="text-xs font-bold uppercase tracking-[0.25em] text-accent">{locale === "es" ? "Cómo lo resolvemos" : "How we resolve it"}</p>
                   <h3 className="mt-4 text-balance font-display text-3xl font-bold leading-tight text-accent">{localize(current.shortTitle, locale)}</h3>
@@ -104,7 +104,7 @@ export function PainToSolution() {
       )}
 
       <div className={`space-y-16 px-4 py-24 ${isReduced ? "" : "lg:hidden"}`}>
-        <h2 className="text-balance font-display text-4xl font-bold leading-none text-text">{locale === "es" ? "Del riesgo a la carretera." : "From risk back to the road."}</h2>
+        <h2 className="type-section text-balance text-text">{locale === "es" ? "Del riesgo a la carretera." : "From risk back to the road."}</h2>
         {story.map((item, index) => (
           <article key={item.slug}>
             <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-white/10">

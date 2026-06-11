@@ -137,7 +137,7 @@ export function Hero() {
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight font-display mb-6 text-text flex flex-wrap justify-center gap-x-3 gap-y-1 sm:gap-y-2 leading-[1.1]"
+            className="type-hero mb-6 flex flex-wrap justify-center gap-x-[0.28em] gap-y-1 text-text sm:gap-y-2"
           >
             {titleWords.map((word, idx) => {
               const highlight = isKeyword(word);

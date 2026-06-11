@@ -58,7 +58,7 @@ export function OneRoof() {
               </Reveal>
 
               <Reveal delay={0.2} yOffset={25}>
-                <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight font-display text-text leading-tight">
+                <h2 className="type-section text-text">
                   {t("title")}
                 </h2>
               </Reveal>

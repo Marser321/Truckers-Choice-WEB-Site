@@ -51,10 +51,10 @@ export function HorizontalServices() {
         <div className="hidden h-screen overflow-hidden lg:sticky lg:top-0 lg:flex lg:flex-col lg:justify-center">
           <Container className="mb-8 flex items-end justify-between">
             <div>
-              <span className="text-xs font-bold uppercase tracking-[0.25em] text-accent">
+              <span className="type-kicker">
                 {locale === "es" ? "Una mesa. Todo resuelto." : "One desk. Every next step."}
               </span>
-              <h2 className="mt-4 max-w-3xl text-balance font-display text-5xl font-bold leading-[0.95] tracking-[-0.04em] text-text">
+              <h2 className="type-section mt-4 max-w-3xl text-balance text-text">
                 {locale === "es" ? "Tu operación no vive en departamentos separados." : "Your operation does not live in separate departments."}
               </h2>
             </div>
@@ -76,8 +76,8 @@ export function HorizontalServices() {
                 <div className="absolute inset-0 bg-gradient-to-r from-[#050810] via-[#050810]/85 to-[#050810]/25" />
                 <div className="absolute inset-y-0 left-0 flex max-w-xl flex-col justify-end p-12">
                   <span className="mb-auto font-display text-7xl font-bold text-white/10">0{index + 1}</span>
-                  <p className="mb-3 text-xs font-bold uppercase tracking-[0.22em] text-accent">{localize(service.title, locale)}</p>
-                  <h3 className="text-balance font-display text-5xl font-bold leading-none tracking-[-0.04em] text-text">{localize(service.shortTitle, locale)}</h3>
+                  <p className="type-kicker mb-3">{localize(service.title, locale)}</p>
+                  <h3 className="type-section max-w-xl text-balance text-text">{localize(service.shortTitle, locale)}</h3>
                   <p className="mt-5 max-w-lg text-base leading-relaxed text-text-muted">{localize(service.description, locale)}</p>
                   <Link href={`/services/${service.slug}`} className="mt-7 inline-flex w-fit items-center gap-2 rounded-full border border-white/15 px-5 py-3 text-xs font-bold text-text transition-colors hover:border-accent hover:text-accent">
                     {locale === "es" ? "Explorar servicio" : "Explore service"} <ArrowRight className="h-4 w-4" />
@@ -91,8 +91,8 @@ export function HorizontalServices() {
 
       <div className={`py-20 ${reduceMotion ? "" : "lg:hidden"}`}>
         <Container>
-          <span className="text-xs font-bold uppercase tracking-[0.25em] text-accent">{locale === "es" ? "Todo en un lugar" : "Everything in one place"}</span>
-          <h2 className="mt-4 text-balance font-display text-4xl font-bold leading-none tracking-[-0.04em] text-text">
+          <span className="type-kicker">{locale === "es" ? "Todo en un lugar" : "Everything in one place"}</span>
+          <h2 className="type-section mt-4 text-balance text-text">
             {locale === "es" ? "Servicios conectados para una operación real." : "Connected services for a real operation."}
           </h2>
         </Container>
@@ -102,8 +102,8 @@ export function HorizontalServices() {
               <Image src={service.cardImage} alt={localize(service.title, locale)} fill className="object-cover" sizes="88vw" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#050810] via-[#050810]/70 to-transparent" />
               <div className="absolute inset-x-0 bottom-0 p-6">
-                <p className="text-xs font-bold uppercase tracking-[0.2em] text-accent">{localize(service.title, locale)}</p>
-                <h3 className="mt-3 font-display text-3xl font-bold leading-none text-text">{localize(service.shortTitle, locale)}</h3>
+                <p className="type-kicker">{localize(service.title, locale)}</p>
+                <h3 className="type-card mt-3 text-3xl text-text">{localize(service.shortTitle, locale)}</h3>
                 <p className="mt-4 text-sm leading-relaxed text-text-muted line-clamp-2">{localize(service.description, locale)}</p>
                 <Link href={`/services/${service.slug}`} className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-accent">
                   {locale === "es" ? "Ver servicio" : "View service"} <ArrowRight className="h-4 w-4" />
