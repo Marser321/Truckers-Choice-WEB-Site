@@ -72,7 +72,7 @@ export function InteriorHero({
         >
           {title}
         </h1>
-        <p className="type-lead mt-7 max-w-2xl text-text-muted">{description}</p>
+        <p className="type-lead mt-7 max-w-2xl">{description}</p>
       </Container>
     </section>
   );

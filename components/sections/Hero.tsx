@@ -163,7 +163,7 @@ export function Hero() {
             initial={isReduced ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.6 }}
-            className="text-base sm:text-xl text-text-muted mb-10 max-w-2xl font-body leading-relaxed"
+            className="text-emphasis mb-10 max-w-2xl font-body text-base leading-relaxed sm:text-xl"
           >
             {t("subcopy")}
           </motion.p>

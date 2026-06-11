@@ -64,7 +64,7 @@ export function OneRoof() {
               </Reveal>
 
               <Reveal delay={0.3} yOffset={30}>
-                <p className="text-base sm:text-lg text-text-muted font-body leading-relaxed">
+                <p className="text-emphasis font-body text-base leading-relaxed sm:text-lg">
                   {t("description")}
                 </p>
               </Reveal>

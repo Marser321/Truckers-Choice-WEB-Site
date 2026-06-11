@@ -193,7 +193,7 @@ export function RoadStory() {
             <p className="mt-6 text-xs font-bold uppercase tracking-[0.2em] text-text-muted">
               {t("chapterLabel")} 0{index + 1}
             </p>
-            <h3 className="mt-3 text-balance font-display text-3xl font-bold leading-tight text-text">{t(`${chapter.key}_title`)}</h3>
+            <h3 className="type-card mt-3 text-balance text-3xl text-text">{t(`${chapter.key}_title`)}</h3>
             <p className="mt-4 leading-relaxed text-text-muted">{t(`${chapter.key}_body`)}</p>
             <Link href={chapter.href} className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-accent">
               {t(`${chapter.key}_cta`)} <ArrowRight className="h-4 w-4" />

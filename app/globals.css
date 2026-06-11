@@ -27,6 +27,7 @@
     --color-action: var(--primitive-amber);
     --color-information: var(--primitive-blue);
     --color-risk: var(--primitive-red);
+    --color-copy-emphasis: 220 30% 82%;
     --type-display-tracking: var(--primitive-tracking-display);
     --type-heading-tracking: var(--primitive-tracking-heading);
     --type-display-leading: var(--primitive-leading-display);
@@ -157,23 +158,36 @@
   .type-section {
     font-family: var(--font-display), sans-serif;
     font-size: clamp(2.25rem, 5vw, 4rem);
-    font-weight: 700;
+    font-weight: 800;
     letter-spacing: var(--type-heading-tracking);
     line-height: var(--type-heading-leading);
   }
 
   .type-card {
     font-family: var(--font-display), sans-serif;
-    font-weight: 650;
+    font-weight: 700;
     letter-spacing: -0.008em;
     line-height: 1.2;
+  }
+
+  .type-subsection {
+    font-family: var(--font-display), sans-serif;
+    font-weight: 800;
+    letter-spacing: var(--type-heading-tracking);
+    line-height: var(--type-heading-leading);
   }
 
   .type-lead {
     font-family: var(--font-body), sans-serif;
     font-size: clamp(1rem, 1.4vw, 1.2rem);
-    font-weight: 400;
+    color: hsl(var(--color-copy-emphasis));
+    font-weight: 500;
     line-height: 1.72;
+  }
+
+  .text-emphasis {
+    color: hsl(var(--color-copy-emphasis));
+    font-weight: 500;
   }
 
   .type-kicker {

@@ -50,7 +50,7 @@ export function QuoteWizard() {
     return (
       <div className="rounded-[2rem] border border-accent/30 bg-accent/5 p-8 md:p-12">
         <div className="flex h-12 w-12 items-center justify-center rounded-full bg-accent text-background"><Check className="h-5 w-5" /></div>
-        <h2 className="mt-7 font-display text-4xl font-bold text-text">{lang === "es" ? "El recorrido funciona." : "The flow works."}</h2>
+        <h2 className="type-subsection mt-7 text-4xl text-text">{lang === "es" ? "El recorrido funciona." : "The flow works."}</h2>
         <p className="mt-4 max-w-xl text-sm leading-relaxed text-text-muted">
           {lang === "es"
             ? "Esta versión es una demostración: tus datos no fueron guardados ni enviados. Para hablar ahora, llama a nuestra oficina de Medley."
@@ -69,7 +69,7 @@ export function QuoteWizard() {
 
       {step === 0 && (
         <fieldset>
-          <legend className="font-display text-3xl font-bold text-text">{lang === "es" ? "¿Qué necesitas resolver?" : "What do you need to solve?"}</legend>
+          <legend className="type-card text-3xl text-text">{lang === "es" ? "¿Qué necesitas resolver?" : "What do you need to solve?"}</legend>
           <div className="mt-7 grid gap-3 sm:grid-cols-2">
             {services.map((service) => (
               <button key={service.slug} type="button" onClick={() => update("need", service.slug)} className={`rounded-2xl border p-4 text-left text-sm font-semibold transition-colors ${lead.need === service.slug ? "border-accent bg-accent/10 text-text" : "border-white/10 text-text-muted hover:border-white/25"}`}>
@@ -82,7 +82,7 @@ export function QuoteWizard() {
 
       {step === 1 && (
         <fieldset>
-          <legend className="font-display text-3xl font-bold text-text">{lang === "es" ? "Cuéntanos sobre la operación." : "Tell us about the operation."}</legend>
+          <legend className="type-card text-3xl text-text">{lang === "es" ? "Cuéntanos sobre la operación." : "Tell us about the operation."}</legend>
           <div className="mt-7 grid gap-5">
             <label className="grid gap-2 text-xs font-bold uppercase tracking-wider text-text-muted">
               {lang === "es" ? "Tipo de operación" : "Operation type"}
@@ -103,7 +103,7 @@ export function QuoteWizard() {
 
       {step === 2 && (
         <fieldset>
-          <legend className="font-display text-3xl font-bold text-text">{lang === "es" ? "¿Cómo podemos contactarte?" : "How can we reach you?"}</legend>
+          <legend className="type-card text-3xl text-text">{lang === "es" ? "¿Cómo podemos contactarte?" : "How can we reach you?"}</legend>
           <div className="mt-7 grid gap-5">
             <label className="grid gap-2 text-xs font-bold uppercase tracking-wider text-text-muted">{lang === "es" ? "Nombre" : "Name"}<input value={lead.name} onChange={(event) => update("name", event.target.value)} autoComplete="name" className="rounded-xl border border-white/10 bg-[#080d18] px-4 py-4 text-sm font-medium normal-case tracking-normal text-text" /></label>
             <div className="grid gap-5 sm:grid-cols-2">

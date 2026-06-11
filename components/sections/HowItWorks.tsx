@@ -145,7 +145,7 @@ export function HowItWorks() {
                     {/* Text content details */}
                     <div className="flex flex-col gap-1 lg:items-center mt-1 lg:mt-0">
                       <Reveal delay={0.25 + idx * 0.1} yOffset={15}>
-                        <h3 className="text-lg sm:text-xl font-bold font-display text-text group-hover:text-accent transition-colors duration-300">
+                        <h3 className="type-card text-lg text-text transition-colors duration-300 group-hover:text-accent sm:text-xl">
                           {t(step.titleKey)}
                         </h3>
                       </Reveal>

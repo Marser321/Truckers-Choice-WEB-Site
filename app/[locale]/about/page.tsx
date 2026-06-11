@@ -92,7 +92,7 @@ export default async function AboutPage({
             <h1 className="type-hero type-hero--compact text-text">
               {t("hero_title")}
             </h1>
-            <p className="text-base sm:text-lg text-text-muted font-body leading-relaxed">
+            <p className="text-emphasis font-body text-base leading-relaxed sm:text-lg">
               {t("hero_desc")}
             </p>
           </div>
@@ -137,7 +137,7 @@ export default async function AboutPage({
                   <div className="p-3 rounded-xl bg-accent/10 text-accent w-fit">
                     <Icon className="h-6 w-6" />
                   </div>
-                  <h3 className="text-xl font-bold font-display text-text">
+                  <h3 className="type-card text-xl text-text">
                     {t(val.titleKey)}
                   </h3>
                   <p className="text-sm text-text-muted font-body leading-relaxed">
@@ -183,7 +183,7 @@ export default async function AboutPage({
                         {t(item.yearKey)}
                       </span>
                     </div>
-                    <h3 className="text-lg font-bold font-display text-text mb-2">
+                    <h3 className="type-card mb-2 text-lg text-text">
                       {t(item.titleKey)}
                     </h3>
                     <p className="text-xs sm:text-sm text-text-muted font-body leading-relaxed">
@@ -246,7 +246,7 @@ export default async function AboutPage({
           <h2 className="type-section text-text">
             {t("cta_title")}
           </h2>
-          <p className="text-base sm:text-lg text-text-muted font-body leading-relaxed max-w-xl">
+          <p className="text-emphasis max-w-xl font-body text-base leading-relaxed sm:text-lg">
             {t("cta_desc")}
           </p>
           <div className="mt-4">

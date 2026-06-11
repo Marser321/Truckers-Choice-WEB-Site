@@ -71,7 +71,7 @@ export default async function ServicePage({ params: { locale, slug } }: { params
         <SectionBackground variant="route" imagePosition="center right" />
         <Container className="relative z-10 max-w-4xl">
           <span className="catalog-kicker">{locale === "es" ? "Cuando importa" : "When it matters"}</span>
-          <h2 className="mt-5 text-balance font-display text-3xl font-bold leading-tight text-text md:text-4xl">
+          <h2 className="type-subsection mt-5 text-balance text-3xl text-text md:text-4xl">
             {localize(service.urgency, locale)}
           </h2>
           <ul className="mt-7 flex flex-col gap-3">
@@ -121,7 +121,7 @@ export default async function ServicePage({ params: { locale, slug } }: { params
                         </span>
                       )}
                       <span className="min-w-0">
-                        <span className="block truncate font-display text-xl font-bold text-text">
+                        <span className="type-card block truncate text-xl text-text">
                           {localize(topic.title, locale)}
                         </span>
                         <span className="mt-1 block text-xs font-bold uppercase tracking-[0.18em] text-accent">
@@ -139,7 +139,7 @@ export default async function ServicePage({ params: { locale, slug } }: { params
                       <li key={item.slug} id={item.slug} className="flex items-start gap-3 py-4 scroll-mt-28">
                         <FileText className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
                         <div className="min-w-0">
-                          <p className="font-display text-base font-bold text-text">{localize(item.title, locale)}</p>
+                          <p className="type-card text-base text-text">{localize(item.title, locale)}</p>
                           <p className="mt-1 text-xs leading-relaxed text-text-muted">{localize(item.whenNeeded, locale)}</p>
                         </div>
                       </li>
@@ -156,7 +156,7 @@ export default async function ServicePage({ params: { locale, slug } }: { params
       <section className="relative overflow-hidden border-t border-white/8 bg-background py-16 md:py-20">
         <SectionBackground variant="surface" />
         <Container className="relative z-10 max-w-4xl">
-          <h2 className="font-display text-3xl font-bold text-text md:text-4xl">
+          <h2 className="type-subsection text-3xl text-text md:text-4xl">
             {locale === "es" ? "Preguntas frecuentes" : "Frequently asked questions"}
           </h2>
           <div className="mt-8 flex flex-col gap-4">
@@ -164,7 +164,7 @@ export default async function ServicePage({ params: { locale, slug } }: { params
               <ExpandableSection
                 key={item.question.en}
                 summary={
-                  <span className="font-display text-lg font-bold text-text">{localize(item.question, locale)}</span>
+                  <span className="type-card text-lg text-text">{localize(item.question, locale)}</span>
                 }
               >
                 <p className="max-w-2xl text-sm leading-relaxed text-text-muted">{localize(item.answer, locale)}</p>

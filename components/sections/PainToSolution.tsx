@@ -79,7 +79,7 @@ export function PainToSolution() {
                   <h2 className="type-section mt-5 text-balance text-text">{localize(current.urgency, locale)}</h2>
                   <div className="my-8 h-px bg-gradient-to-r from-red-400/50 via-accent/50 to-transparent" />
                   <p className="text-xs font-bold uppercase tracking-[0.25em] text-accent">{locale === "es" ? "Cómo lo resolvemos" : "How we resolve it"}</p>
-                  <h3 className="mt-4 text-balance font-display text-3xl font-bold leading-tight text-accent">{localize(current.shortTitle, locale)}</h3>
+                  <h3 className="type-card mt-4 text-balance text-3xl text-accent">{localize(current.shortTitle, locale)}</h3>
                   <p className="mt-4 max-w-md text-sm leading-relaxed text-text-muted">{localize(current.description, locale)}</p>
                   <Link href={`/services/${current.slug}`} className="mt-7 inline-flex items-center gap-2 text-sm font-bold text-text hover:text-accent">{locale === "es" ? "Ver la solución" : "See the solution"} <ArrowRight className="h-4 w-4" /></Link>
                 </motion.div>
@@ -112,7 +112,7 @@ export function PainToSolution() {
               <span className="absolute left-4 top-4 rounded-full bg-[#050810]/80 px-3 py-2 text-xs font-bold text-accent">0{index + 1}</span>
             </div>
             <p className="mt-6 text-xs font-bold uppercase tracking-[0.2em] text-red-400">{locale === "es" ? "El riesgo" : "The risk"}</p>
-            <h3 className="mt-3 font-display text-3xl font-bold leading-tight text-text">{localize(item.urgency, locale)}</h3>
+            <h3 className="type-card mt-3 text-3xl text-text">{localize(item.urgency, locale)}</h3>
             <p className="mt-6 text-xs font-bold uppercase tracking-[0.2em] text-accent">{locale === "es" ? "La salida" : "The way forward"}</p>
             <p className="mt-3 text-lg font-semibold text-accent">{localize(item.description, locale)}</p>
           </article>

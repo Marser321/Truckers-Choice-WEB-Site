@@ -43,15 +43,15 @@ export default async function LocationDetailPage({ params: { locale, slug } }: {
             <div className="mt-8 space-y-7">
               <div className="flex gap-4">
                 <MapPin className="h-6 w-6 shrink-0 text-accent" />
-                <div><h2 className="font-display text-xl font-bold text-text">{locale === "es" ? "Direccion" : "Address"}</h2><p className="mt-2 text-sm text-text-muted">{location.address}</p></div>
+                <div><h2 className="type-card text-xl text-text">{locale === "es" ? "Direccion" : "Address"}</h2><p className="mt-2 text-sm text-text-muted">{location.address}</p></div>
               </div>
               <div className="flex gap-4">
                 <Phone className="h-6 w-6 shrink-0 text-accent" />
-                <div><h2 className="font-display text-xl font-bold text-text">{locale === "es" ? "Telefono y fax" : "Phone and fax"}</h2><a href={`tel:${location.phoneRaw}`} className="mt-2 block text-sm font-bold text-accent">{location.phone}</a><p className="mt-1 text-xs text-text-muted">Fax: {location.fax}</p></div>
+                <div><h2 className="type-card text-xl text-text">{locale === "es" ? "Telefono y fax" : "Phone and fax"}</h2><a href={`tel:${location.phoneRaw}`} className="mt-2 block text-sm font-bold text-accent">{location.phone}</a><p className="mt-1 text-xs text-text-muted">Fax: {location.fax}</p></div>
               </div>
               <div className="flex gap-4">
                 <Clock className="h-6 w-6 shrink-0 text-accent" />
-                <div><h2 className="font-display text-xl font-bold text-text">{locale === "es" ? "Horario" : "Hours"}</h2><p className="mt-2 text-sm text-text-muted">{localize(location.hours, locale)}</p></div>
+                <div><h2 className="type-card text-xl text-text">{locale === "es" ? "Horario" : "Hours"}</h2><p className="mt-2 text-sm text-text-muted">{localize(location.hours, locale)}</p></div>
               </div>
             </div>
             <div className="mt-9 flex flex-wrap gap-3 border-t border-white/8 pt-7">
