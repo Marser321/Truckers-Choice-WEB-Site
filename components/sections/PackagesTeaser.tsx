@@ -9,7 +9,7 @@ import { Section } from "@/components/ui/Section";
 export async function PackagesTeaser() {
   const locale = await getLocale();
   return (
-    <Section className="bg-background">
+    <Section className="bg-background" background="route" backgroundPosition="center right">
       <div className="absolute right-0 top-0 h-[500px] w-[500px] rounded-full bg-accent-2/5 blur-[150px] pointer-events-none z-0" />
       <Container className="relative">
         <Reveal variant="mask-up">

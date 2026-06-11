@@ -1,12 +1,54 @@
 export type Locale = "en" | "es";
+export type ClaimStatus = "confirmed" | "research-pending" | "rejected";
+export type JourneyStage = "start" | "operate" | "comply";
+export type ServiceFamily =
+  | "corporations"
+  | "authority"
+  | "registration"
+  | "permits"
+  | "insurance"
+  | "compliance";
 
 export interface LocalizedText {
   en: string;
   es: string;
 }
 
+export interface ClaimSource {
+  label: string;
+  url: string;
+  accessedAt: string;
+  note?: string;
+}
+
+export interface ServiceDetail {
+  slug: string;
+  topicSlug: string;
+  title: LocalizedText;
+  description: LocalizedText;
+  whenNeeded: LocalizedText;
+  status: ClaimStatus;
+  sources: ClaimSource[];
+}
+
+export interface ServiceTopic {
+  slug: string;
+  familySlug: string;
+  title: LocalizedText;
+  description: LocalizedText;
+  handles: LocalizedText;
+  status: ClaimStatus;
+  detailSlugs: string[];
+  relatedFamilySlugs: string[];
+  painImage?: string;
+}
+
 export interface ServiceContent {
   slug: string;
+  family: ServiceFamily;
+  journey: JourneyStage;
+  status: ClaimStatus;
+  sources: ClaimSource[];
   title: LocalizedText;
   shortTitle: LocalizedText;
   description: LocalizedText;
@@ -14,8 +56,9 @@ export interface ServiceContent {
   image: string;
   painImage: string;
   cardImage: string;
-  includes: LocalizedText[];
+  details: ServiceDetail[];
   process: LocalizedText[];
+  relatedFamilySlugs: string[];
   faqs: Array<{ question: LocalizedText; answer: LocalizedText }>;
 }
 
@@ -25,6 +68,7 @@ export interface PackageContent {
   description: LocalizedText;
   bestFor: LocalizedText;
   includes: LocalizedText[];
+  status: ClaimStatus;
 }
 
 export interface ResourceFrontmatter {
@@ -48,13 +92,45 @@ export interface LocationContent {
   phoneRaw: string;
   fax: string;
   hours: LocalizedText;
+  openingHours: Array<{ days: string[]; opens: string; closes: string }>;
   description: LocalizedText;
   lat: number;
   lng: number;
+  status: ClaimStatus;
+}
+
+export interface AuditedClaim {
+  id: string;
+  status: ClaimStatus;
+  text: LocalizedText;
+  sources: ClaimSource[];
+  note?: string;
 }
 
 export const localize = (value: LocalizedText, locale: string) =>
   value[locale === "es" ? "es" : "en"];
+
+export const isPublicClaim = <T extends { status: ClaimStatus }>(item: T) =>
+  item.status === "confirmed";
+
+const currentWebsite: ClaimSource = {
+  label: "Current Truckers Choice services page",
+  url: "https://www.truckerspermitting.com/services",
+  accessedAt: "2026-06-11",
+};
+
+const currentLocations: ClaimSource = {
+  label: "Current Truckers Choice locations and local pages",
+  url: "https://www.truckerspermitting.com/locations",
+  accessedAt: "2026-06-11",
+};
+
+const researchReport: ClaimSource = {
+  label: "Internal industry research",
+  url: "internal://deep-research-report",
+  accessedAt: "2026-06-11",
+  note: "Useful opportunity research, not client approval.",
+};
 
 const faq = (
   questionEn: string,
@@ -66,236 +142,435 @@ const faq = (
   answer: { en: answerEn, es: answerEs },
 });
 
-export const services: ServiceContent[] = [
-  {
-    slug: "authority-registration",
-    title: { en: "Authority & Registration", es: "Autoridad y Registro" },
-    shortTitle: { en: "Get legal. Start moving.", es: "Actívate. Empieza a rodar." },
-    description: {
-      en: "We coordinate USDOT, MC authority, BOC-3 and UCR so your operation starts on solid ground.",
-      es: "Coordinamos USDOT, autoridad MC, BOC-3 y UCR para que tu operación empiece sobre una base firme.",
-    },
-    urgency: {
-      en: "Operating without the right authority can stop a truck before the first profitable load.",
-      es: "Operar sin la autoridad correcta puede detener el camión antes de la primera carga rentable.",
-    },
-    image: "/images/svc-authority.jpg",
-    painImage: "/images/pain-authority-stop.webp",
-    cardImage: "/images/svc-card-authority.png",
-    includes: [
-      { en: "USDOT number registration", es: "Registro de número USDOT" },
-      { en: "MC operating authority", es: "Autoridad operativa MC" },
-      { en: "BOC-3 filing", es: "Presentación BOC-3" },
-      { en: "UCR registration guidance", es: "Acompañamiento para registro UCR" },
-      { en: "MC Letter of Authority copies", es: "Copias de la Carta de Autoridad MC (Letter of Authority)" },
-    ],
-    process: [
-      { en: "We review your operation", es: "Revisamos tu operación" },
-      { en: "We prepare the required filings", es: "Preparamos las presentaciones requeridas" },
-      { en: "We guide you through activation", es: "Te acompañamos hasta la activación" },
-    ],
-    faqs: [
-      faq("Do I need both USDOT and MC?", "¿Necesito USDOT y MC?", "It depends on how and where you operate. We review your operation before recommending filings.", "Depende de cómo y dónde operas. Revisamos tu operación antes de recomendar trámites."),
-      faq("How long does activation take?", "¿Cuánto tarda la activación?", "Timing varies by filing and federal processing. We give you a clear checklist and next steps.", "El tiempo varía según el trámite y el procesamiento federal. Te damos un checklist y próximos pasos claros."),
-      faq("What is a Letter of Authority?", "¿Qué es la Letter of Authority?", "It is the official FMCSA document confirming your operating authority is active. Brokers, shippers and insurers often request a copy before working with you. We help you obtain it and keep it on file.", "Es el documento oficial de la FMCSA que confirma que tu autoridad operativa está activa. Brokers, embarcadores y aseguradoras suelen pedir una copia antes de trabajar contigo. Te ayudamos a obtenerla y mantenerla en archivo."),
-    ],
-  },
-  {
-    slug: "irp-plates-titles",
-    title: { en: "IRP, Plates & Titles", es: "IRP, Placas y Títulos" },
-    shortTitle: { en: "Keep every wheel authorized.", es: "Mantén cada rueda autorizada." },
-    description: {
-      en: "Apportioned registrations, commercial plates, titles and Form 2290 support for interstate trucks.",
-      es: "Registros proporcionales, placas comerciales, títulos y apoyo con Formulario 2290 para camiones interestatales.",
-    },
-    urgency: {
-      en: "Expired or incorrect registrations create delays at weigh stations and ports of entry.",
-      es: "Registros vencidos o incorrectos generan retrasos en básculas y puertos de entrada.",
-    },
-    image: "/images/svc-irp.jpg",
-    painImage: "/images/pain-weigh-station.jpg",
-    cardImage: "/images/svc-card-irp.png",
-    includes: [
-      { en: "IRP account setup and renewals", es: "Apertura y renovación de cuenta IRP" },
-      { en: "Apportioned plates", es: "Placas proporcionales" },
-      { en: "Title transfers", es: "Transferencias de título" },
-      { en: "Form 2290 guidance", es: "Acompañamiento con Formulario 2290" },
-    ],
-    process: [
-      { en: "Confirm vehicle and operation details", es: "Confirmamos vehículo y operación" },
-      { en: "Prepare registration documents", es: "Preparamos documentos de registro" },
-      { en: "Coordinate filing and renewal", es: "Coordinamos presentación y renovación" },
-    ],
-    faqs: [
-      faq("What is IRP?", "¿Qué es IRP?", "IRP distributes commercial registration fees across the jurisdictions where a qualified vehicle operates.", "IRP distribuye las tarifas de registro comercial entre las jurisdicciones donde opera un vehículo calificado."),
-      faq("Can you help with renewals?", "¿Ayudan con renovaciones?", "Yes. We can review your current registration and help prepare the renewal.", "Sí. Podemos revisar tu registro actual y ayudar a preparar la renovación."),
-    ],
-  },
-  {
-    slug: "permits-fuel-tax",
-    title: { en: "Permits & Fuel Tax", es: "Permisos e Impuestos de Combustible" },
-    shortTitle: { en: "Cross state lines with confidence.", es: "Cruza estados con confianza." },
-    description: {
-      en: "IFTA and state-specific permit support for carriers operating across multiple jurisdictions.",
-      es: "Apoyo con IFTA y permisos estatales para transportistas que operan en múltiples jurisdicciones.",
-    },
-    urgency: {
-      en: "Every state line can introduce a different filing, tax or permit requirement.",
-      es: "Cada frontera estatal puede introducir un trámite, impuesto o permiso diferente.",
-    },
-    image: "/images/svc-permits.jpg",
-    painImage: "/images/pain-weigh-station.jpg",
-    cardImage: "/images/svc-card-permits.png",
-    includes: [
-      { en: "IFTA account setup", es: "Apertura de cuenta IFTA" },
-      { en: "Quarterly fuel-tax filing support", es: "Apoyo con declaraciones trimestrales" },
-      { en: "NY HUT, KYU and New Mexico permits", es: "Permisos NY HUT, KYU y Nuevo México" },
-      { en: "Temporary trip permits", es: "Permisos temporales de viaje" },
-    ],
-    process: [
-      { en: "Map where you operate", es: "Mapeamos dónde operas" },
-      { en: "Identify required permits", es: "Identificamos los permisos requeridos" },
-      { en: "Prepare filings and deadlines", es: "Preparamos trámites y fechas límite" },
-    ],
-    faqs: [
-      faq("Do I need IFTA?", "¿Necesito IFTA?", "It depends on your vehicle and interstate operation. We help determine the requirements that apply.", "Depende de tu vehículo y operación interestatal. Te ayudamos a determinar los requisitos aplicables."),
-      faq("Do permits expire?", "¿Los permisos vencen?", "Many permits and registrations renew on a schedule. We explain the deadlines that apply to your operation.", "Muchos permisos y registros se renuevan periódicamente. Te explicamos las fechas aplicables a tu operación."),
-    ],
-  },
-  {
-    slug: "truck-insurance",
-    title: { en: "Truck Insurance", es: "Seguro de Camiones" },
-    shortTitle: { en: "Protect the load and the road ahead.", es: "Protege la carga y el camino." },
-    description: {
-      en: "Commercial trucking coverage coordinated around your equipment, cargo and operating authority.",
-      es: "Cobertura comercial coordinada alrededor de tu equipo, carga y autoridad operativa.",
-    },
-    urgency: {
-      en: "The wrong coverage can leave your authority, equipment and next load exposed.",
-      es: "La cobertura incorrecta puede dejar expuestos tu autoridad, equipo y próxima carga.",
-    },
-    image: "/images/svc-insurance.jpg",
-    painImage: "/images/pain-storm-road.webp",
-    cardImage: "/images/svc-card-insurance.png",
-    includes: [
-      { en: "Primary liability", es: "Responsabilidad primaria" },
-      { en: "Cargo coverage", es: "Cobertura de carga" },
-      { en: "Bobtail coverage", es: "Cobertura bobtail" },
-      { en: "Physical damage", es: "Daño físico" },
-      { en: "UIIA & port drayage insurance compliance", es: "Cumplimiento de seguro UIIA y drayage portuario" },
-    ],
-    process: [
-      { en: "Understand your operation and cargo", es: "Entendemos tu operación y carga" },
-      { en: "Review coverage needs", es: "Revisamos necesidades de cobertura" },
-      { en: "Coordinate the quote process", es: "Coordinamos el proceso de cotización" },
-    ],
-    faqs: [
-      faq("What coverage do I need?", "¿Qué cobertura necesito?", "Coverage depends on your contracts, cargo, equipment and authority. A specialist reviews the full picture.", "La cobertura depende de tus contratos, carga, equipo y autoridad. Un especialista revisa el panorama completo."),
-      faq("Can insurance and permits be coordinated?", "¿Se pueden coordinar seguro y permisos?", "Yes. That coordination is a core benefit of working with one trucking-focused team.", "Sí. Esa coordinación es un beneficio clave de trabajar con un solo equipo especializado."),
-      faq("Do you handle UIIA insurance requirements for port drayage?", "¿Manejan los requisitos de seguro UIIA para drayage portuario?", "Yes. Intermodal carriers operating under the UIIA need specific coverages, including trailer interchange and non-owned trailer liability, filed with IANA. Our New Jersey offices near the Port of NY/NJ coordinate these requirements regularly.", "Sí. Los transportistas intermodales que operan bajo el acuerdo UIIA necesitan coberturas específicas, incluyendo intercambio de remolques (trailer interchange) y responsabilidad por remolques no propios, registradas ante IANA. Nuestras oficinas de Nueva Jersey, cerca del Puerto de NY/NJ, coordinan estos requisitos con frecuencia."),
-    ],
-  },
-  {
-    slug: "dot-compliance",
-    title: { en: "DOT Compliance & Audits", es: "Cumplimiento DOT y Auditorías" },
-    shortTitle: { en: "Stay ready before DOT asks.", es: "Prepárate antes de que DOT pregunte." },
-    description: {
-      en: "Practical support for driver files, testing programs, renewals and DOT audit preparation.",
-      es: "Apoyo práctico para expedientes de conductores, programas de pruebas, renovaciones y auditorías DOT.",
-    },
-    urgency: {
-      en: "Compliance gaps can ground trucks, interrupt loads and threaten operating authority.",
-      es: "Las brechas de cumplimiento pueden detener camiones, interrumpir cargas y amenazar la autoridad.",
-    },
-    image: "/images/svc-compliance.jpg",
-    painImage: "/images/pain-compliance-alert.webp",
-    cardImage: "/images/svc-card-compliance.png",
-    includes: [
-      { en: "Driver qualification files", es: "Expedientes de calificación de conductores" },
-      { en: "Pre-employment and random drug & alcohol testing programs", es: "Programas de pruebas de drogas y alcohol pre-empleo y aleatorias" },
-      { en: "FMCSA Drug & Alcohol Clearinghouse registration and queries", es: "Registro y consultas en el Clearinghouse de Drogas y Alcohol de la FMCSA" },
-      { en: "MCS-150 biennial update filing", es: "Actualización bienal del MCS-150" },
-      { en: "MVR and document review", es: "Revisión de MVR y documentos" },
-      { en: "DOT audit preparation", es: "Preparación para auditoría DOT" },
-    ],
-    process: [
-      { en: "Identify compliance gaps", es: "Identificamos brechas de cumplimiento" },
-      { en: "Organize required records", es: "Organizamos registros requeridos" },
-      { en: "Build a maintenance routine", es: "Creamos una rutina de mantenimiento" },
-    ],
-    faqs: [
-      faq("What is a DQF?", "¿Qué es un DQF?", "A Driver Qualification File contains required records used to document a driver's qualifications.", "Un expediente de calificación contiene registros requeridos para documentar las calificaciones del conductor."),
-      faq("Can you help before an audit?", "¿Pueden ayudar antes de una auditoría?", "Yes. Preparation is most effective before deadlines or audit requests become urgent.", "Sí. La preparación es más efectiva antes de que las fechas o solicitudes se vuelvan urgentes."),
-      faq("What is the Drug & Alcohol Clearinghouse?", "¿Qué es el Clearinghouse de Drogas y Alcohol?", "It is FMCSA's online database of CDL driver drug and alcohol violations. Carriers must register, run a pre-employment query on every new driver and an annual query on current drivers. A driver in prohibited status cannot operate until completing the return-to-duty process.", "Es la base de datos en línea de la FMCSA con las violaciones de drogas y alcohol de conductores CDL. Los transportistas deben registrarse, hacer una consulta pre-empleo a cada conductor nuevo y una consulta anual a los actuales. Un conductor en estado prohibido no puede operar hasta completar el proceso de regreso al servicio."),
-      faq("What is the difference between pre-employment and random testing?", "¿Cuál es la diferencia entre pruebas pre-empleo y aleatorias?", "A pre-employment test is required before a CDL driver operates for you for the first time. Random testing enrolls your drivers in an ongoing pool with unannounced selections throughout the year. DOT requires both.", "La prueba pre-empleo se exige antes de que un conductor CDL opere por primera vez para tu empresa. Las pruebas aleatorias inscriben a tus conductores en un pool con selecciones sin previo aviso durante el año. El DOT exige ambas."),
-      faq("When do I file the MCS-150 biennial update?", "¿Cuándo se presenta la actualización bienal del MCS-150?", "Every carrier must update its MCS-150 at least once every two years, even if nothing changed, on a schedule tied to the USDOT number. Missing the deadline can deactivate your USDOT number.", "Todo transportista debe actualizar su MCS-150 al menos una vez cada dos años, incluso sin cambios, según un calendario ligado al número USDOT. No cumplir la fecha puede desactivar tu número USDOT."),
-    ],
-  },
+const detail = (
+  slug: string,
+  topicSlug: string,
+  en: string,
+  es: string,
+  descriptionEn: string,
+  descriptionEs: string,
+  whenEn: string,
+  whenEs: string
+): ServiceDetail => ({
+  slug,
+  topicSlug,
+  title: { en, es },
+  description: { en: descriptionEn, es: descriptionEs },
+  whenNeeded: { en: whenEn, es: whenEs },
+  status: "confirmed",
+  sources: [currentWebsite],
+});
+
+const allServices: ServiceContent[] = [
   {
     slug: "corporations-llc",
+    family: "corporations",
+    journey: "start",
+    status: "confirmed",
+    sources: [currentWebsite],
     title: { en: "Corporations & LLCs", es: "Corporaciones y LLC" },
     shortTitle: { en: "Build the business behind the truck.", es: "Construye el negocio detrás del camión." },
     description: {
-      en: "Business formation and EIN guidance designed to support the next steps of a trucking operation.",
-      es: "Formación empresarial y acompañamiento con EIN diseñados para apoyar los próximos pasos de una operación.",
+      en: "Business formation and Tax ID/EIN assistance for new trucking operations.",
+      es: "Asistencia con formación empresarial y Tax ID/EIN para nuevas operaciones de transporte.",
     },
     urgency: {
-      en: "A clean business structure makes authority, insurance and banking easier to coordinate.",
-      es: "Una estructura empresarial clara facilita coordinar autoridad, seguro y banca.",
+      en: "The business structure is the first piece that connects paperwork, insurance and permits.",
+      es: "La estructura empresarial es la primera pieza que conecta documentos, seguros y permisos.",
     },
     image: "/images/svc-corp.jpg",
     painImage: "/images/pain-paperwork-cab.jpg",
     cardImage: "/images/svc-card-corp.png",
-    includes: [
-      { en: "Corporation or LLC formation", es: "Formación de corporación o LLC" },
-      { en: "EIN / Tax ID guidance", es: "Acompañamiento con EIN / Tax ID" },
-      { en: "Startup document checklist", es: "Checklist de documentos iniciales" },
-      { en: "Coordination with authority setup", es: "Coordinación con apertura de autoridad" },
+    details: [
+      detail("corp", "business-formation", "Corporation (Corp)", "Corporación (Corp)", "Assistance forming a corporation for the trucking business.", "Asistencia para formar una corporación para el negocio de transporte.", "When starting or restructuring the business.", "Al iniciar o reestructurar el negocio."),
+      detail("llc", "business-formation", "Limited Liability Company (LLC)", "Compañía de Responsabilidad Limitada (LLC)", "Assistance forming an LLC for the trucking business.", "Asistencia para formar una LLC para el negocio de transporte.", "When choosing an entity for a new operation.", "Al elegir una entidad para una nueva operación."),
+      detail("inc", "business-formation", "Incorporation (Inc.)", "Incorporación (Inc.)", "Assistance with incorporation paperwork.", "Asistencia con documentos de incorporación.", "When the selected business structure requires incorporation.", "Cuando la estructura elegida requiere incorporación."),
+      detail("ein-tax-id", "business-formation", "Tax ID / EIN", "Tax ID / EIN", "Assistance obtaining the federal tax identification used by the business.", "Asistencia para obtener la identificación fiscal federal usada por el negocio.", "When the business needs its federal tax identifier.", "Cuando el negocio necesita su identificador fiscal federal."),
     ],
     process: [
-      { en: "Choose the operation path", es: "Elegimos el camino de operación" },
-      { en: "Prepare formation details", es: "Preparamos detalles de formación" },
+      { en: "Review the business goal", es: "Revisamos el objetivo del negocio" },
+      { en: "Prepare formation information", es: "Preparamos la información de formación" },
       { en: "Connect the next registrations", es: "Conectamos los siguientes registros" },
     ],
+    relatedFamilySlugs: ["authority-registration", "truck-insurance"],
     faqs: [
-      faq("Should I form an LLC or corporation?", "¿Debo formar una LLC o corporación?", "The right structure depends on your situation. We help organize the formation process, but legal or tax advice should come from qualified advisors.", "La estructura correcta depende de tu situación. Ayudamos a organizar el proceso, pero el consejo legal o fiscal debe venir de profesionales calificados."),
-      faq("What comes after formation?", "¿Qué sigue después de formar la empresa?", "Most new carriers then coordinate authority, insurance, plates and compliance requirements.", "La mayoría de nuevos transportistas después coordina autoridad, seguro, placas y cumplimiento."),
+      faq("Should I form an LLC or corporation?", "¿Debo formar una LLC o corporación?", "The right structure depends on your situation. We organize the formation process, while legal or tax advice should come from qualified advisors.", "La estructura correcta depende de tu situación. Organizamos el proceso de formación, mientras el consejo legal o fiscal debe venir de profesionales calificados."),
+      faq("What comes after formation?", "¿Qué sigue después de formar la empresa?", "New trucking businesses commonly move next into authority, insurance, registration and permit requirements.", "Los nuevos negocios de transporte normalmente continúan con autoridad, seguros, registros y permisos."),
+    ],
+  },
+  {
+    slug: "authority-registration",
+    family: "authority",
+    journey: "start",
+    status: "confirmed",
+    sources: [currentWebsite],
+    title: { en: "DOT & MC Authority", es: "Autoridad DOT y MC" },
+    shortTitle: { en: "Set up the authority behind the operation.", es: "Establece la autoridad de tu operación." },
+    description: {
+      en: "Assistance with DOT, MC, BOC-3, UCR and Letter of Authority paperwork.",
+      es: "Asistencia con documentos DOT, MC, BOC-3, UCR y Carta de Autoridad.",
+    },
+    urgency: {
+      en: "Missing authority paperwork can delay the moment an operation is ready to move.",
+      es: "La falta de documentos de autoridad puede retrasar el momento de empezar a operar.",
+    },
+    image: "/images/svc-authority.jpg",
+    painImage: "/images/pain-authority-stop.webp",
+    cardImage: "/images/svc-card-authority.png",
+    details: [
+      detail("dot-number", "usdot-mc", "DOT Number", "Número DOT", "Assistance with DOT number paperwork.", "Asistencia con documentos para el número DOT.", "When the operation requires DOT identification.", "Cuando la operación requiere identificación DOT."),
+      detail("mc-number", "usdot-mc", "MC Number", "Número MC", "Assistance with MC operating authority paperwork.", "Asistencia con documentos de autoridad operativa MC.", "When the operation requires MC authority.", "Cuando la operación requiere autoridad MC."),
+      detail("boc-3", "boc3-ucr", "BOC-3", "BOC-3", "Assistance with BOC-3 filing.", "Asistencia con la presentación BOC-3.", "When BOC-3 is part of the authority setup.", "Cuando BOC-3 forma parte de la apertura de autoridad."),
+      detail("ucr", "boc3-ucr", "UCR", "UCR", "Assistance with UCR registration.", "Asistencia con el registro UCR.", "When UCR registration applies to the operation.", "Cuando el registro UCR aplica a la operación."),
+      detail("letter-of-authority", "usdot-mc", "Letter of Authority", "Carta de Autoridad", "Assistance obtaining a Letter of Authority copy.", "Asistencia para obtener una copia de la Carta de Autoridad.", "When a current authority document is requested.", "Cuando se solicita un documento vigente de autoridad."),
+    ],
+    process: [
+      { en: "Review how the business will operate", es: "Revisamos cómo operará el negocio" },
+      { en: "Prepare the applicable filings", es: "Preparamos los trámites aplicables" },
+      { en: "Organize the next operational steps", es: "Organizamos los próximos pasos operativos" },
+    ],
+    relatedFamilySlugs: ["truck-insurance", "irp-plates-titles"],
+    faqs: [
+      faq("Do I need both DOT and MC?", "¿Necesito DOT y MC?", "It depends on how and where the business operates. We review the operation before organizing the paperwork.", "Depende de cómo y dónde opera el negocio. Revisamos la operación antes de organizar los documentos."),
+      faq("Can you help with a Letter of Authority?", "¿Ayudan con la Carta de Autoridad?", "Yes. Letter of Authority assistance is listed among the current services.", "Sí. La asistencia con Carta de Autoridad aparece entre los servicios actuales."),
+    ],
+  },
+  {
+    slug: "irp-plates-titles",
+    family: "registration",
+    journey: "operate",
+    status: "confirmed",
+    sources: [currentWebsite],
+    title: { en: "IRP, Plates & Titles", es: "IRP, Placas y Títulos" },
+    shortTitle: { en: "Keep registrations and vehicle documents moving.", es: "Mantén en marcha registros y documentos." },
+    description: {
+      en: "Assistance with apportioned plates, commercial plates, registrations, transfers, titles and Form 2290.",
+      es: "Asistencia con placas proporcionales, placas comerciales, registros, transferencias, títulos y Formulario 2290.",
+    },
+    urgency: {
+      en: "Registration and title issues can interrupt trips and create avoidable delays.",
+      es: "Los problemas de registro y título pueden interrumpir viajes y causar retrasos evitables.",
+    },
+    image: "/images/svc-irp.jpg",
+    painImage: "/images/pain-weigh-station.jpg",
+    cardImage: "/images/svc-card-irp.png",
+    details: [
+      detail("new-apportioned-plates", "irp-registration", "New apportioned plates", "Nuevas placas proporcionales", "Assistance with new apportioned plate paperwork.", "Asistencia con documentos para nuevas placas proporcionales.", "When registering an applicable vehicle for the first time.", "Al registrar por primera vez un vehículo aplicable."),
+      detail("commercial-plates", "irp-registration", "Commercial plates", "Placas comerciales", "Assistance with commercial plate paperwork.", "Asistencia con documentos para placas comerciales.", "When a commercial vehicle needs the applicable plate.", "Cuando un vehículo comercial necesita la placa aplicable."),
+      detail("registration-renewal", "irp-registration", "Registration renewal", "Renovación de registro", "Assistance renewing an existing registration.", "Asistencia para renovar un registro existente.", "Before the current registration expires.", "Antes del vencimiento del registro actual."),
+      detail("plate-transfer", "titles-2290", "Plate transfer", "Transferencia de placa", "Assistance with plate transfer paperwork.", "Asistencia con documentos para transferencia de placa.", "When moving an applicable plate between vehicles.", "Al transferir una placa aplicable entre vehículos."),
+      detail("titles", "titles-2290", "Titles", "Títulos", "Assistance with vehicle title paperwork.", "Asistencia con documentos de títulos vehiculares.", "When a title must be issued, updated or transferred.", "Cuando un título debe emitirse, actualizarse o transferirse."),
+      detail("form-2290", "titles-2290", "Road Tax / Form 2290", "Road Tax / Formulario 2290", "Assistance with Road Tax Form 2290 paperwork.", "Asistencia con documentos del Road Tax/Formulario 2290.", "When Form 2290 applies to the vehicle.", "Cuando el Formulario 2290 aplica al vehículo."),
+    ],
+    process: [
+      { en: "Confirm vehicle and document details", es: "Confirmamos vehículo y documentos" },
+      { en: "Prepare the applicable paperwork", es: "Preparamos los documentos aplicables" },
+      { en: "Coordinate the registration next step", es: "Coordinamos el siguiente paso del registro" },
+    ],
+    relatedFamilySlugs: ["permits-fuel-tax", "truck-insurance"],
+    faqs: [
+      faq("Can you help with registration renewals?", "¿Ayudan con renovaciones de registro?", "Yes. Registration renewal is listed among the current services.", "Sí. La renovación de registro aparece entre los servicios actuales."),
+      faq("Do you assist with Form 2290?", "¿Ayudan con el Formulario 2290?", "Yes. Road Tax/Form 2290 assistance is listed among the current services.", "Sí. La asistencia con Road Tax/Formulario 2290 aparece entre los servicios actuales."),
+    ],
+  },
+  {
+    slug: "permits-fuel-tax",
+    family: "permits",
+    journey: "operate",
+    status: "confirmed",
+    sources: [currentWebsite],
+    title: { en: "Permits & Fuel Tax", es: "Permisos e Impuestos de Combustible" },
+    shortTitle: { en: "Organize permits before the next route.", es: "Organiza permisos antes de la próxima ruta." },
+    description: {
+      en: "Assistance with IFTA, quarterly fuel taxes, state permits and temporary permits.",
+      es: "Asistencia con IFTA, impuestos trimestrales de combustible, permisos estatales y temporales.",
+    },
+    urgency: {
+      en: "Routes can introduce different permit and fuel-tax paperwork.",
+      es: "Las rutas pueden introducir distintos documentos de permisos e impuestos de combustible.",
+    },
+    image: "/images/svc-permits.jpg",
+    painImage: "/images/pain-state-line-snow.jpg",
+    cardImage: "/images/svc-card-permits.png",
+    details: [
+      detail("ifta-permit", "ifta-fuel-tax", "IFTA permit", "Permiso IFTA", "Assistance with IFTA permit paperwork.", "Asistencia con documentos del permiso IFTA.", "When IFTA applies to the operation.", "Cuando IFTA aplica a la operación."),
+      detail("ny-hut", "state-permits", "NY HUT permit", "Permiso NY HUT", "Assistance with NY HUT permit paperwork.", "Asistencia con documentos del permiso NY HUT.", "When the route and vehicle require NY HUT.", "Cuando la ruta y el vehículo requieren NY HUT."),
+      detail("kyu", "state-permits", "KYU permit", "Permiso KYU", "Assistance with KYU permit paperwork.", "Asistencia con documentos del permiso KYU.", "When the route and vehicle require KYU.", "Cuando la ruta y el vehículo requieren KYU."),
+      detail("nm-permit", "state-permits", "New Mexico permit", "Permiso de Nuevo México", "Assistance with New Mexico permit paperwork.", "Asistencia con documentos del permiso de Nuevo México.", "When the route and vehicle require the permit.", "Cuando la ruta y el vehículo requieren el permiso."),
+      detail("temporary-permits", "state-permits", "Temporary permits", "Permisos temporales", "Assistance with temporary permit paperwork.", "Asistencia con documentos de permisos temporales.", "When a temporary permit is needed for a trip.", "Cuando se necesita un permiso temporal para un viaje."),
+      detail("quarterly-fuel-taxes", "ifta-fuel-tax", "Quarterly fuel taxes", "Impuestos trimestrales de combustible", "Assistance with quarterly fuel-tax paperwork.", "Asistencia con documentos trimestrales de impuestos de combustible.", "When the applicable quarterly filing is due.", "Cuando vence la declaración trimestral aplicable."),
+    ],
+    process: [
+      { en: "Review routes and current paperwork", es: "Revisamos rutas y documentos actuales" },
+      { en: "Identify the applicable permits", es: "Identificamos los permisos aplicables" },
+      { en: "Organize filings and recurring dates", es: "Organizamos trámites y fechas recurrentes" },
+    ],
+    relatedFamilySlugs: ["irp-plates-titles", "dot-compliance"],
+    faqs: [
+      faq("Do you assist with state permits?", "¿Ayudan con permisos estatales?", "Yes. NY HUT, KYU and New Mexico permits are listed among the current services.", "Sí. Los permisos NY HUT, KYU y Nuevo México aparecen entre los servicios actuales."),
+      faq("Can you help with quarterly fuel taxes?", "¿Ayudan con impuestos trimestrales de combustible?", "Yes. Quarterly fuel-tax assistance is listed among the current services.", "Sí. La asistencia con impuestos trimestrales de combustible aparece entre los servicios actuales."),
+    ],
+  },
+  {
+    slug: "truck-insurance",
+    family: "insurance",
+    journey: "operate",
+    status: "confirmed",
+    sources: [currentWebsite],
+    title: { en: "Truck Insurance", es: "Seguro de Camiones" },
+    shortTitle: { en: "Coordinate coverage around the operation.", es: "Coordina cobertura alrededor de tu operación." },
+    description: {
+      en: "Assistance with primary liability, cargo, bobtail and physical damage insurance.",
+      es: "Asistencia con seguros de responsabilidad primaria, carga, bobtail y daños físicos.",
+    },
+    urgency: {
+      en: "Coverage needs change with the truck, cargo and operation.",
+      es: "Las necesidades de cobertura cambian según el camión, la carga y la operación.",
+    },
+    image: "/images/svc-insurance.jpg",
+    painImage: "/images/pain-storm-road.webp",
+    cardImage: "/images/svc-card-insurance.png",
+    details: [
+      detail("primary-liability", "coverage-options", "Primary liability", "Responsabilidad primaria", "Assistance coordinating primary liability insurance.", "Asistencia para coordinar seguro de responsabilidad primaria.", "When the operation needs applicable liability coverage.", "Cuando la operación necesita la cobertura de responsabilidad aplicable."),
+      detail("cargo-insurance", "coverage-options", "Cargo insurance", "Seguro de carga", "Assistance coordinating cargo insurance.", "Asistencia para coordinar seguro de carga.", "When the operation needs coverage for transported cargo.", "Cuando la operación necesita cobertura para la carga transportada."),
+      detail("bobtail", "coverage-options", "Bobtail", "Bobtail", "Assistance coordinating bobtail insurance.", "Asistencia para coordinar seguro bobtail.", "When bobtail coverage applies to the operation.", "Cuando la cobertura bobtail aplica a la operación."),
+      detail("physical-damage", "coverage-options", "Physical damage", "Daños físicos", "Assistance coordinating physical damage insurance.", "Asistencia para coordinar seguro de daños físicos.", "When the equipment needs applicable physical damage coverage.", "Cuando el equipo necesita cobertura aplicable de daños físicos."),
+    ],
+    process: [
+      { en: "Review the truck, cargo and operation", es: "Revisamos camión, carga y operación" },
+      { en: "Organize applicable coverage needs", es: "Organizamos las coberturas aplicables" },
+      { en: "Coordinate the quote process", es: "Coordinamos el proceso de cotización" },
+    ],
+    relatedFamilySlugs: ["authority-registration", "irp-plates-titles"],
+    faqs: [
+      faq("What coverage do I need?", "¿Qué cobertura necesito?", "Coverage depends on the operation, equipment, cargo and applicable requirements. A specialist reviews the situation before coordinating a quote.", "La cobertura depende de la operación, equipo, carga y requisitos aplicables. Un especialista revisa la situación antes de coordinar una cotización."),
+      faq("Can insurance and permits be coordinated?", "¿Se pueden coordinar seguro y permisos?", "Yes. The current website presents insurance and permits as connected services.", "Sí. La web actual presenta seguros y permisos como servicios conectados."),
+    ],
+  },
+  {
+    slug: "dot-compliance",
+    family: "compliance",
+    journey: "comply",
+    status: "confirmed",
+    sources: [currentWebsite],
+    title: { en: "DOT Compliance & Audits", es: "Cumplimiento DOT y Auditorías" },
+    shortTitle: { en: "Keep required records organized.", es: "Mantén organizados los registros requeridos." },
+    description: {
+      en: "Assistance with MVR reports, driver applications, testing programs and DOT audits.",
+      es: "Asistencia con reportes MVR, solicitudes de conductores, programas de pruebas y auditorías DOT.",
+    },
+    urgency: {
+      en: "Missing compliance records can create interruptions when documents are requested.",
+      es: "La falta de registros de cumplimiento puede causar interrupciones cuando se solicitan documentos.",
+    },
+    image: "/images/svc-compliance.jpg",
+    painImage: "/images/pain-audit-desk.jpg",
+    cardImage: "/images/svc-card-compliance.png",
+    details: [
+      detail("mvr-report", "audits-testing", "MVR report", "Reporte MVR", "Assistance with MVR report paperwork.", "Asistencia con documentos del reporte MVR.", "When an applicable motor vehicle record is needed.", "Cuando se necesita un registro vehicular aplicable."),
+      detail("driver-application", "audits-testing", "Driver application", "Solicitud de conductor", "Assistance organizing driver application paperwork.", "Asistencia para organizar documentos de solicitud del conductor.", "When adding or documenting a driver.", "Al agregar o documentar un conductor."),
+      detail("random-program", "audits-testing", "Random program enrollment", "Inscripción en programa aleatorio", "Assistance with random program enrollment.", "Asistencia con inscripción en programa aleatorio.", "When the applicable testing program is required.", "Cuando se requiere el programa de pruebas aplicable."),
+      detail("pre-employment-drug-test", "audits-testing", "Pre-employment drug test", "Prueba de drogas pre-empleo", "Assistance coordinating a pre-employment drug test.", "Asistencia para coordinar una prueba de drogas pre-empleo.", "Before an applicable driver begins work.", "Antes de que un conductor aplicable comience a trabajar."),
+      detail("dot-audit", "audits-testing", "DOT audit", "Auditoría DOT", "Assistance preparing for a DOT audit.", "Asistencia para prepararse para una auditoría DOT.", "When preparing records for a DOT audit.", "Al preparar registros para una auditoría DOT."),
+    ],
+    process: [
+      { en: "Review existing records", es: "Revisamos los registros existentes" },
+      { en: "Identify missing documents", es: "Identificamos documentos faltantes" },
+      { en: "Organize the applicable next step", es: "Organizamos el siguiente paso aplicable" },
+    ],
+    relatedFamilySlugs: ["permits-fuel-tax", "authority-registration"],
+    faqs: [
+      faq("Can you help before a DOT audit?", "¿Pueden ayudar antes de una auditoría DOT?", "Yes. DOT audit assistance is listed among the current services.", "Sí. La asistencia con auditorías DOT aparece entre los servicios actuales."),
+      faq("Do you assist with driver paperwork?", "¿Ayudan con documentos de conductores?", "Yes. MVR reports and driver applications are listed among the current services.", "Sí. Los reportes MVR y solicitudes de conductores aparecen entre los servicios actuales."),
     ],
   },
 ];
 
-export const packages: PackageContent[] = [
+export const services = allServices.filter(isPublicClaim);
+
+const allServiceTopics: ServiceTopic[] = [
   {
-    slug: "new-owner-operator",
-    title: { en: "New Owner-Operator", es: "Nuevo Dueño-Operador" },
-    description: { en: "A guided path from business formation to your first compliant load.", es: "Un camino guiado desde la formación del negocio hasta tu primera carga en cumplimiento." },
-    bestFor: { en: "Starting a trucking business", es: "Empezar un negocio de transporte" },
-    includes: services.slice(0, 4).map((service) => service.title),
+    slug: "business-formation",
+    familySlug: "corporations-llc",
+    title: { en: "Corp, LLC, Inc. & EIN", es: "Corp, LLC, Inc. y EIN" },
+    description: { en: "The formation documents behind a new trucking business.", es: "Los documentos de formación detrás de un nuevo negocio de transporte." },
+    handles: { en: "Truckers Choice helps organize the selected formation and Tax ID/EIN paperwork.", es: "Truckers Choice ayuda a organizar la formación elegida y los documentos Tax ID/EIN." },
+    status: "confirmed",
+    detailSlugs: ["corp", "llc", "inc", "ein-tax-id"],
+    relatedFamilySlugs: ["authority-registration"],
+    painImage: "/images/hero-alt-newowner-dawn.jpg",
   },
   {
-    slug: "small-fleet",
-    title: { en: "Small Fleet", es: "Flota Pequeña" },
-    description: { en: "Coordinated registrations, insurance and ongoing compliance for growing teams.", es: "Registros, seguros y cumplimiento coordinados para equipos en crecimiento." },
-    bestFor: { en: "Operations adding trucks or drivers", es: "Operaciones que agregan camiones o conductores" },
-    includes: [services[1].title, services[2].title, services[3].title, services[4].title],
+    slug: "usdot-mc",
+    familySlug: "authority-registration",
+    title: { en: "DOT, MC & Letter of Authority", es: "DOT, MC y Carta de Autoridad" },
+    description: { en: "Core authority paperwork for the operation.", es: "Documentos centrales de autoridad para la operación." },
+    handles: { en: "Truckers Choice helps organize DOT, MC and Letter of Authority paperwork.", es: "Truckers Choice ayuda a organizar documentos DOT, MC y Carta de Autoridad." },
+    status: "confirmed",
+    detailSlugs: ["dot-number", "mc-number", "letter-of-authority"],
+    relatedFamilySlugs: ["truck-insurance", "irp-plates-titles"],
+    painImage: "/images/pain-roadside-inspection.jpg",
   },
   {
-    slug: "hotshot-non-cdl",
-    title: { en: "Hotshot / Non-CDL", es: "Hotshot / Sin CDL" },
-    description: { en: "A requirement-focused setup for lighter and specialized operations.", es: "Una configuración enfocada en requisitos para operaciones ligeras y especializadas." },
-    bestFor: { en: "Hotshot and specialized carriers", es: "Transportistas hotshot y especializados" },
-    includes: [services[0].title, services[2].title, services[3].title],
+    slug: "boc3-ucr",
+    familySlug: "authority-registration",
+    title: { en: "BOC-3 & UCR", es: "BOC-3 y UCR" },
+    description: { en: "Additional authority-related filings listed in the current service catalog.", es: "Trámites adicionales de autoridad incluidos en el catálogo actual." },
+    handles: { en: "Truckers Choice assists with BOC-3 and UCR paperwork.", es: "Truckers Choice ayuda con documentos BOC-3 y UCR." },
+    status: "confirmed",
+    detailSlugs: ["boc-3", "ucr"],
+    relatedFamilySlugs: ["authority-registration"],
+    painImage: "/images/pain-grounded-truck.jpg",
   },
   {
-    slug: "freight-broker",
-    title: { en: "Freight Broker", es: "Freight Broker (Corredor de Carga)" },
-    description: { en: "Formation and authority coordination for a brokerage operation.", es: "Formación y coordinación de autoridad para una operación de corretaje de carga." },
-    bestFor: { en: "Starting a freight brokerage", es: "Empezar un negocio de corretaje de carga" },
-    includes: [services[5].title, services[0].title],
+    slug: "irp-registration",
+    familySlug: "irp-plates-titles",
+    title: { en: "IRP, commercial plates & renewals", es: "IRP, placas comerciales y renovaciones" },
+    description: { en: "Plate and registration paperwork for commercial vehicles.", es: "Documentos de placas y registro para vehículos comerciales." },
+    handles: { en: "Truckers Choice assists with apportioned plates, commercial plates and registration renewals.", es: "Truckers Choice ayuda con placas proporcionales, placas comerciales y renovaciones." },
+    status: "confirmed",
+    detailSlugs: ["new-apportioned-plates", "commercial-plates", "registration-renewal"],
+    relatedFamilySlugs: ["permits-fuel-tax"],
+    painImage: "/images/pain-weigh-station.jpg",
+  },
+  {
+    slug: "titles-2290",
+    familySlug: "irp-plates-titles",
+    title: { en: "Plate transfers, titles & Form 2290", es: "Transferencias, títulos y Formulario 2290" },
+    description: { en: "Vehicle document assistance beyond the initial plate.", es: "Asistencia documental del vehículo más allá de la placa inicial." },
+    handles: { en: "Truckers Choice assists with plate transfers, titles and Road Tax/Form 2290 paperwork.", es: "Truckers Choice ayuda con transferencias de placas, títulos y Road Tax/Formulario 2290." },
+    status: "confirmed",
+    detailSlugs: ["plate-transfer", "titles", "form-2290"],
+    relatedFamilySlugs: ["irp-plates-titles"],
+    painImage: "/images/pain-paperwork-cab.jpg",
+  },
+  {
+    slug: "ifta-fuel-tax",
+    familySlug: "permits-fuel-tax",
+    title: { en: "IFTA & quarterly fuel taxes", es: "IFTA e impuestos trimestrales de combustible" },
+    description: { en: "Fuel-tax paperwork listed in the current service catalog.", es: "Documentos de impuestos de combustible incluidos en el catálogo actual." },
+    handles: { en: "Truckers Choice assists with IFTA permits and quarterly fuel-tax paperwork.", es: "Truckers Choice ayuda con permisos IFTA y documentos trimestrales de combustible." },
+    status: "confirmed",
+    detailSlugs: ["ifta-permit", "quarterly-fuel-taxes"],
+    relatedFamilySlugs: ["irp-plates-titles"],
+    painImage: "/images/pain-fuel-stop.jpg",
+  },
+  {
+    slug: "state-permits",
+    familySlug: "permits-fuel-tax",
+    title: { en: "State & temporary permits", es: "Permisos estatales y temporales" },
+    description: { en: "NY HUT, KYU, New Mexico and temporary permit assistance.", es: "Asistencia con NY HUT, KYU, Nuevo México y permisos temporales." },
+    handles: { en: "Truckers Choice helps organize the applicable state or temporary permit paperwork.", es: "Truckers Choice ayuda a organizar los documentos estatales o temporales aplicables." },
+    status: "confirmed",
+    detailSlugs: ["ny-hut", "kyu", "nm-permit", "temporary-permits"],
+    relatedFamilySlugs: ["permits-fuel-tax"],
+    painImage: "/images/pain-state-line-snow.jpg",
+  },
+  {
+    slug: "coverage-options",
+    familySlug: "truck-insurance",
+    title: { en: "Truck insurance coverage options", es: "Opciones de cobertura para camiones" },
+    description: { en: "Primary liability, cargo, bobtail and physical damage assistance.", es: "Asistencia con responsabilidad primaria, carga, bobtail y daños físicos." },
+    handles: { en: "Truckers Choice coordinates the quote process around the applicable coverage needs.", es: "Truckers Choice coordina la cotización según las coberturas aplicables." },
+    status: "confirmed",
+    detailSlugs: ["primary-liability", "cargo-insurance", "bobtail", "physical-damage"],
+    relatedFamilySlugs: ["authority-registration"],
+    painImage: "/images/pain-cargo-dock.jpg",
+  },
+  {
+    slug: "audits-testing",
+    familySlug: "dot-compliance",
+    title: { en: "Driver records, testing & DOT audits", es: "Registros, pruebas y auditorías DOT" },
+    description: { en: "Confirmed driver-document, testing-program and audit assistance.", es: "Asistencia confirmada con documentos, programas de pruebas y auditorías." },
+    handles: { en: "Truckers Choice helps organize the applicable records and next steps.", es: "Truckers Choice ayuda a organizar los registros y próximos pasos aplicables." },
+    status: "confirmed",
+    detailSlugs: ["mvr-report", "driver-application", "random-program", "pre-employment-drug-test", "dot-audit"],
+    relatedFamilySlugs: ["dot-compliance"],
+    painImage: "/images/pain-audit-desk.jpg",
   },
 ];
 
-export const locations: LocationContent[] = [
+export const serviceTopics = allServiceTopics.filter(isPublicClaim);
+
+export const auditedClaims: AuditedClaim[] = [
+  {
+    id: "one-roof-service-model",
+    status: "confirmed",
+    text: { en: "Insurance, permits and compliance are coordinated in one place.", es: "Seguros, permisos y cumplimiento se coordinan en un solo lugar." },
+    sources: [currentWebsite],
+  },
+  {
+    id: "experience-duration",
+    status: "research-pending",
+    text: { en: "More than 20 years of experience.", es: "Más de 20 años de experiencia." },
+    sources: [
+      { ...currentWebsite, url: "https://www.truckerspermitting.com" },
+      { ...currentWebsite, url: "https://www.truckerspermitting.com/about-us", note: "Contradicts homepage by stating more than 15 years." },
+    ],
+    note: "Use neutral experience language until the client confirms the correct duration.",
+  },
+  {
+    id: "uiia-iana",
+    status: "research-pending",
+    text: { en: "UIIA/IANA port drayage insurance services.", es: "Servicios de seguro UIIA/IANA para drayage portuario." },
+    sources: [researchReport],
+  },
+  {
+    id: "clearinghouse-mcs150-dqf",
+    status: "research-pending",
+    text: { en: "Clearinghouse, MCS-150 and DQF services.", es: "Servicios de Clearinghouse, MCS-150 y DQF." },
+    sources: [researchReport],
+  },
+  {
+    id: "hotshot-freight-broker-bmc84",
+    status: "research-pending",
+    text: { en: "Hotshot, freight broker and BMC-84 service packages.", es: "Paquetes para Hotshot, freight broker y BMC-84." },
+    sources: [researchReport],
+  },
+  {
+    id: "exact-history-dates",
+    status: "research-pending",
+    text: { en: "Exact founding, expansion and office-opening dates.", es: "Fechas exactas de fundación, expansión y apertura de oficinas." },
+    sources: [researchReport],
+  },
+  {
+    id: "legacy-mechanical-booking",
+    status: "rejected",
+    text: { en: "Tire, battery and oil/brake booking services.", es: "Reservas de llantas, batería y aceite/frenos." },
+    sources: [{ ...currentWebsite, url: "https://www.truckerspermitting.com/book-online", note: "Inherited Wix template content with placeholder contact details." }],
+  },
+];
+
+const allPackages: PackageContent[] = [
+  {
+    slug: "start-the-business",
+    title: { en: "Start the Business", es: "Inicia el Negocio" },
+    description: { en: "Connect formation and authority paperwork around the new operation.", es: "Conecta formación y documentos de autoridad alrededor de la nueva operación." },
+    bestFor: { en: "New trucking businesses", es: "Nuevos negocios de transporte" },
+    includes: [services[0].title, services[1].title],
+    status: "confirmed",
+  },
+  {
+    slug: "prepare-to-operate",
+    title: { en: "Prepare to Operate", es: "Prepárate para Operar" },
+    description: { en: "Coordinate registration, permits and insurance around the truck and routes.", es: "Coordina registros, permisos y seguros alrededor del camión y sus rutas." },
+    bestFor: { en: "Operations getting ready to move", es: "Operaciones preparándose para rodar" },
+    includes: [services[2].title, services[3].title, services[4].title],
+    status: "confirmed",
+  },
+  {
+    slug: "keep-records-ready",
+    title: { en: "Keep Records Ready", es: "Mantén Registros Listos" },
+    description: { en: "Organize recurring permits, driver paperwork and audit preparation.", es: "Organiza permisos recurrentes, documentos de conductores y auditorías." },
+    bestFor: { en: "Existing trucking operations", es: "Operaciones de transporte existentes" },
+    includes: [services[3].title, services[5].title],
+    status: "confirmed",
+  },
+];
+
+export const packages = allPackages.filter(isPublicClaim);
+
+const allLocations: LocationContent[] = [
   {
     slug: "medley-fl",
     name: "Medley, FL",
@@ -307,10 +582,15 @@ export const locations: LocationContent[] = [
     phone: "305-749-9990",
     phoneRaw: "+13057499990",
     fax: "305-900-5699",
-    hours: { en: "Mon–Fri 9–5 · Sat 9–1", es: "Lun–Vie 9–5 · Sáb 9–1" },
-    description: { en: "Serving South Florida's trucking community with bilingual support.", es: "Atendiendo a la comunidad camionera del sur de Florida con apoyo bilingüe." },
+    hours: { en: "Mon-Fri 9-5 · Sat 9-1", es: "Lun-Vie 9-5 · Sab 9-1" },
+    openingHours: [
+      { days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], opens: "09:00", closes: "17:00" },
+      { days: ["Saturday"], opens: "09:00", closes: "13:00" },
+    ],
+    description: { en: "Local office serving the trucking community in Medley, Florida.", es: "Oficina local que atiende a la comunidad camionera en Medley, Florida." },
     lat: 25.854881,
     lng: -80.342371,
+    status: "confirmed",
   },
   {
     slug: "jersey-city-nj",
@@ -323,10 +603,15 @@ export const locations: LocationContent[] = [
     phone: "201-333-2255",
     phoneRaw: "+12013332255",
     fax: "201-333-0522",
-    hours: { en: "Mon–Fri 9–6 · Sat 10–2", es: "Lun–Vie 9–6 · Sáb 10–2" },
-    description: { en: "Local support near the Port of New York and New Jersey, with UIIA and container drayage insurance experience.", es: "Apoyo local cerca del Puerto de Nueva York y Nueva Jersey, con experiencia en seguros UIIA y drayage de contenedores." },
+    hours: { en: "Mon-Fri 9-6 · Sat 10-2", es: "Lun-Vie 9-6 · Sab 10-2" },
+    openingHours: [
+      { days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], opens: "09:00", closes: "18:00" },
+      { days: ["Saturday"], opens: "10:00", closes: "14:00" },
+    ],
+    description: { en: "Local office serving the trucking community in Jersey City, New Jersey.", es: "Oficina local que atiende a la comunidad camionera en Jersey City, Nueva Jersey." },
     lat: 40.72591,
     lng: -74.07661,
+    status: "confirmed",
   },
   {
     slug: "elizabeth-nj",
@@ -339,52 +624,65 @@ export const locations: LocationContent[] = [
     phone: "908-351-1085",
     phoneRaw: "+19083511085",
     fax: "908-351-1086",
-    hours: { en: "Mon–Fri 9–6 · Sat 10–2", es: "Lun–Vie 9–6 · Sáb 10–2" },
-    description: { en: "Bilingual trucking support for the Newark and Elizabeth port area, including UIIA compliance for drayage carriers.", es: "Apoyo camionero bilingüe para el área portuaria de Newark y Elizabeth, incluyendo cumplimiento UIIA para transportistas de drayage." },
+    hours: { en: "Mon-Fri 9-6 · Sat 10-2", es: "Lun-Vie 9-6 · Sab 10-2" },
+    openingHours: [
+      { days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], opens: "09:00", closes: "18:00" },
+      { days: ["Saturday"], opens: "10:00", closes: "14:00" },
+    ],
+    description: { en: "Local office serving the trucking community in Elizabeth, New Jersey.", es: "Oficina local que atiende a la comunidad camionera en Elizabeth, Nueva Jersey." },
     lat: 40.67912,
     lng: -74.19504,
+    status: "confirmed",
   },
 ];
+
+export const locations = allLocations.filter(isPublicClaim);
 
 export const resources: ResourceFrontmatter[] = [
   {
     slug: "startup-checklist",
-    title: { en: "The owner-operator startup checklist", es: "Checklist para empezar como dueño-operador" },
-    description: { en: "A plain-language map of the decisions and filings behind a new trucking operation.", es: "Un mapa claro de las decisiones y trámites detrás de una nueva operación de transporte." },
-    eyebrow: { en: "Start strong", es: "Empieza bien" },
+    title: { en: "The trucking-business startup checklist", es: "Checklist para iniciar un negocio de transporte" },
+    description: { en: "A plain-language map of the paperwork behind a new trucking operation.", es: "Un mapa claro de los documentos detrás de una nueva operación de transporte." },
+    eyebrow: { en: "Start organized", es: "Empieza organizado" },
     readingTime: { en: "6 min read", es: "6 min de lectura" },
     sections: [
-      { title: { en: "Build the business", es: "Construye el negocio" }, body: { en: "Start with the legal structure and tax identification that will support banking, insurance and federal filings.", es: "Empieza con la estructura legal e identificación fiscal que sostendrán banca, seguro y trámites federales." } },
-      { title: { en: "Activate the operation", es: "Activa la operación" }, body: { en: "Coordinate authority, insurance, registrations and permits based on where and how you plan to operate.", es: "Coordina autoridad, seguro, registros y permisos según dónde y cómo planeas operar." } },
-      { title: { en: "Stay ready", es: "Mantente preparado" }, body: { en: "Create a routine for renewals, driver records, fuel tax and compliance before deadlines become emergencies.", es: "Crea una rutina para renovaciones, expedientes, impuestos de combustible y cumplimiento antes de que las fechas sean emergencias." } },
+      { title: { en: "Build the business", es: "Construye el negocio" }, body: { en: "Start with the selected business formation and Tax ID/EIN paperwork.", es: "Empieza con la formación empresarial elegida y los documentos Tax ID/EIN." } },
+      { title: { en: "Organize authority and insurance", es: "Organiza autoridad y seguro" }, body: { en: "Connect the applicable authority and insurance paperwork around the operation.", es: "Conecta los documentos aplicables de autoridad y seguros alrededor de la operación." } },
+      { title: { en: "Prepare recurring records", es: "Prepara registros recurrentes" }, body: { en: "Keep registrations, permits and compliance documents organized before deadlines.", es: "Mantén registros, permisos y documentos de cumplimiento organizados antes de los vencimientos." } },
     ],
   },
   {
     slug: "irp-vs-ifta",
-    title: { en: "IRP vs IFTA: what each one does", es: "IRP vs IFTA: qué hace cada uno" },
-    description: { en: "Two interstate requirements, explained without the alphabet soup.", es: "Dos requisitos interestatales explicados sin sopa de letras." },
+    title: { en: "IRP vs IFTA: two different paperwork paths", es: "IRP vs IFTA: dos caminos documentales distintos" },
+    description: { en: "A simple introduction to two services commonly requested by interstate operations.", es: "Una introducción sencilla a dos servicios solicitados por operaciones interestatales." },
     eyebrow: { en: "Permits explained", es: "Permisos claros" },
     readingTime: { en: "5 min read", es: "5 min de lectura" },
     sections: [
-      { title: { en: "IRP follows registration", es: "IRP sigue el registro" }, body: { en: "IRP helps distribute commercial vehicle registration fees among participating jurisdictions.", es: "IRP ayuda a distribuir las tarifas de registro comercial entre jurisdicciones participantes." } },
-      { title: { en: "IFTA follows fuel use", es: "IFTA sigue el uso de combustible" }, body: { en: "IFTA simplifies reporting fuel taxes for qualified vehicles operating across jurisdictions.", es: "IFTA simplifica el reporte de impuestos de combustible para vehículos calificados que operan entre jurisdicciones." } },
-      { title: { en: "Your operation decides", es: "Tu operación decide" }, body: { en: "Vehicle weight, configuration and operating territory determine which registrations apply.", es: "El peso, configuración y territorio operativo determinan qué registros aplican." } },
+      { title: { en: "IRP connects to registration", es: "IRP se conecta al registro" }, body: { en: "IRP assistance sits with apportioned plates and commercial registration paperwork.", es: "La asistencia IRP se relaciona con placas proporcionales y documentos de registro comercial." } },
+      { title: { en: "IFTA connects to fuel-tax paperwork", es: "IFTA se conecta a documentos de combustible" }, body: { en: "IFTA assistance sits with permits and quarterly fuel-tax paperwork.", es: "La asistencia IFTA se relaciona con permisos y documentos trimestrales de combustible." } },
+      { title: { en: "Review the operation first", es: "Revisa primero la operación" }, body: { en: "The right paperwork depends on the vehicle, routes and current registrations.", es: "Los documentos correctos dependen del vehículo, rutas y registros actuales." } },
     ],
   },
   {
     slug: "dot-audit-preparation",
-    title: { en: "Prepare before a DOT audit becomes urgent", es: "Prepárate antes de que una auditoría DOT sea urgente" },
-    description: { en: "A practical starting point for organizing driver and compliance records.", es: "Un punto de partida práctico para organizar expedientes y registros de cumplimiento." },
-    eyebrow: { en: "Protect continuity", es: "Protege la continuidad" },
+    title: { en: "Organize records before a DOT audit", es: "Organiza registros antes de una auditoría DOT" },
+    description: { en: "A practical starting point for the confirmed compliance services.", es: "Un punto de partida práctico para los servicios confirmados de cumplimiento." },
+    eyebrow: { en: "Keep records ready", es: "Mantén registros listos" },
     readingTime: { en: "7 min read", es: "7 min de lectura" },
     sections: [
-      { title: { en: "Know what you have", es: "Conoce lo que tienes" }, body: { en: "Inventory driver files, testing records, registrations and recurring deadlines.", es: "Inventaría expedientes, registros de pruebas, registros vehiculares y fechas recurrentes." } },
-      { title: { en: "Close gaps early", es: "Cierra brechas temprano" }, body: { en: "Missing records are easier to address before an audit request or renewal deadline.", es: "Los registros faltantes son más fáciles de resolver antes de una auditoría o renovación." } },
-      { title: { en: "Maintain a routine", es: "Mantén una rutina" }, body: { en: "Compliance is a recurring operating process, not a one-time filing.", es: "El cumplimiento es un proceso operativo recurrente, no un trámite único." } },
+      { title: { en: "Know what you have", es: "Conoce lo que tienes" }, body: { en: "Inventory driver applications, MVR reports, testing records and permit documents.", es: "Inventaría solicitudes de conductores, reportes MVR, pruebas y permisos." } },
+      { title: { en: "Identify missing documents", es: "Identifica documentos faltantes" }, body: { en: "Missing records are easier to organize before an audit request.", es: "Los registros faltantes son más fáciles de organizar antes de una auditoría." } },
+      { title: { en: "Maintain the paperwork", es: "Mantén los documentos" }, body: { en: "Treat compliance documents as a recurring operating responsibility.", es: "Trata los documentos de cumplimiento como una responsabilidad operativa recurrente." } },
     ],
   },
 ];
 
 export const getService = (slug: string) => services.find((service) => service.slug === slug);
+export const getServiceTopics = (familySlug: string) =>
+  serviceTopics.filter((topic) => topic.familySlug === familySlug);
+export const getServiceDetailsForTopic = (topic: ServiceTopic) => {
+  const family = getService(topic.familySlug);
+  return family?.details.filter((item) => topic.detailSlugs.includes(item.slug) && isPublicClaim(item)) ?? [];
+};
 export const getLocation = (slug: string) => locations.find((location) => location.slug === slug);
 export const getResource = (slug: string) => resources.find((resource) => resource.slug === slug);

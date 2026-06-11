@@ -82,7 +82,7 @@ export default async function AboutPage({
       <div className="pointer-events-none absolute bottom-1/4 right-0 h-[500px] w-[500px] rounded-full bg-secondary/5 blur-[120px] z-0" />
 
       {/* Hero Section */}
-      <Section className="relative z-10 pt-16 pb-8 md:pt-24 md:pb-12">
+      <Section className="relative z-10 pt-16 pb-8 md:pt-24 md:pb-12" background="local" backgroundPosition="center right">
         <Container className="flex flex-col lg:flex-row gap-12 items-center max-w-6xl mx-auto">
           {/* Hero Left - Text */}
           <div className="flex flex-col gap-6 lg:w-1/2">
@@ -115,7 +115,7 @@ export default async function AboutPage({
       </Section>
 
       {/* Values Section */}
-      <Section className="relative z-10 py-16 md:py-24 bg-surface/20 border-t border-b border-white/5">
+      <Section className="relative z-10 py-16 md:py-24 bg-surface/20 border-t border-b border-white/5" background="surface">
         <Container className="flex flex-col gap-12 max-w-6xl mx-auto">
           <div className="text-center max-w-2xl mx-auto flex flex-col gap-3">
             <Badge variant="amber" className="mx-auto w-fit">VALUES</Badge>
@@ -151,7 +151,7 @@ export default async function AboutPage({
       </Section>
 
       {/* History Timeline Section */}
-      <Section className="relative z-10 py-16 md:py-24">
+      <Section className="relative z-10 py-16 md:py-24" background="route" backgroundPosition="center right">
         <Container className="flex flex-col gap-16 max-w-4xl mx-auto">
           <div className="text-center flex flex-col gap-3">
             <Badge variant="amber" className="mx-auto w-fit">TIMELINE</Badge>
@@ -198,7 +198,7 @@ export default async function AboutPage({
       </Section>
 
       {/* Why Trust / Badges Section */}
-      <Section className="relative z-10 py-16 md:py-24 bg-surface/20 border-t border-white/5">
+      <Section className="relative z-10 py-16 md:py-24 bg-surface/20 border-t border-white/5" background="surface">
         <Container className="flex flex-col gap-12 max-w-6xl mx-auto text-center">
           <div className="max-w-2xl mx-auto flex flex-col gap-3">
             <Badge variant="amber" className="mx-auto w-fit">WHY TRUCKERS CHOICE</Badge>
@@ -213,10 +213,10 @@ export default async function AboutPage({
           {/* Trust badges grid */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 items-stretch">
             {[
-              { label: "BILINGUAL SUPPORT", sub: "English + Spanish", desc: "Clear help for high-stress operational decisions" },
-              { label: "ONE-ROOF SERVICE", sub: "Connected workflow", desc: "Insurance, permits and compliance coordinated together" },
-              { label: "THREE OFFICES", sub: "Florida + New Jersey", desc: "Medley, Jersey City and Elizabeth" },
-              { label: "20+ YEARS", sub: "Trucking focused", desc: "Experience helping commercial trucking operations" },
+              { label: locale === "es" ? "ATENCION BILINGUE" : "BILINGUAL SUPPORT", sub: "English + Spanish", desc: locale === "es" ? "Ayuda clara para decisiones operativas" : "Clear help for operational decisions" },
+              { label: locale === "es" ? "SERVICIO CONECTADO" : "CONNECTED SERVICE", sub: locale === "es" ? "Un mismo flujo" : "One workflow", desc: locale === "es" ? "Seguro, permisos y cumplimiento coordinados" : "Insurance, permits and compliance coordinated together" },
+              { label: locale === "es" ? "TRES OFICINAS" : "THREE OFFICES", sub: "Florida + New Jersey", desc: "Medley, Jersey City and Elizabeth" },
+              { label: locale === "es" ? "30 SERVICIOS" : "30 SERVICES", sub: locale === "es" ? "Catalogo confirmado" : "Confirmed catalog", desc: locale === "es" ? "Cada servicio enlazado a su expediente" : "Every service linked to its operational file" },
             ].map((badge, idx) => (
               <div
                 key={idx}
@@ -241,7 +241,7 @@ export default async function AboutPage({
       </Section>
 
       {/* CTA Section */}
-      <Section className="relative z-10 py-16 md:py-28 bg-gradient-to-b from-transparent to-[#0F1626]/40 border-t border-white/5">
+      <Section className="relative z-10 py-16 md:py-28 bg-gradient-to-b from-transparent to-[#0F1626]/40 border-t border-white/5" background="route" backgroundPosition="center right">
         <Container className="max-w-4xl mx-auto text-center flex flex-col items-center gap-6">
           <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight font-display text-text">
             {t("cta_title")}

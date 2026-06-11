@@ -1,7 +1,7 @@
 import { Inter } from "next/font/google";
 import localFont from "next/font/local";
 import { NextIntlClientProvider } from "next-intl";
-import { getMessages, getTranslations } from "next-intl/server";
+import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { locales } from "@/navigation";
 import { SmoothScrollProvider } from "@/lib/smooth-scroll";
@@ -71,6 +71,10 @@ export async function generateMetadata({
   };
 }
 
+export function generateStaticParams() {
+  return locales.map((locale) => ({ locale }));
+}
+
 export default async function LocaleLayout({
   children,
   params: { locale },
@@ -82,6 +86,7 @@ export default async function LocaleLayout({
     notFound();
   }
 
+  setRequestLocale(locale);
   const messages = await getMessages();
   const tNav = await getTranslations({ locale, namespace: "nav" });
 

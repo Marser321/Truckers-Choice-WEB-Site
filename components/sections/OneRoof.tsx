@@ -45,7 +45,7 @@ export function OneRoof() {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_50%,rgba(15,22,38,0.7)_0%,rgba(7,11,20,1)_100%)] z-0" />
       <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] rounded-full bg-accent-2/5 blur-[160px] pointer-events-none z-0" />
 
-      <Section className="relative z-10 py-24 md:py-36">
+      <Section className="relative z-10 py-24 md:py-36" background="surface">
         <Container>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             

@@ -1,7 +1,7 @@
 {
   "metadata": {
     "title": "Truckers Choice - Truck Insurance & Permits Specialists",
-    "description": "Offering you the best trucking insurance and permits solutions for over 20 years. Medley FL, Jersey City NJ, Elizabeth NJ."
+    "description": "Truck insurance, permits and compliance paperwork in Medley FL, Jersey City NJ and Elizabeth NJ."
   },
   "home": {
     "title": "Truckers Choice Insurance & Permits",
@@ -22,46 +22,29 @@
     "skip": "Skip to content"
   },
   "hero": {
-    "eyebrow": "20+ years · FL & NJ",
+    "eyebrow": "Insurance · Permits · Compliance",
     "title": "Insurance + Permits. One roof.",
     "subcopy": "Simplifying commercial trucking operations and protecting your fleet.",
     "cta_quote": "Get a Free Quote",
     "cta_call": "Call now",
-    "trust_text": "Trusted by owner-operators"
+    "trust_text": "30 confirmed services in one connected catalog"
   },
   "trust": {
     "years_title": "Years of experience",
     "offices_title": "Offices in FL & NJ",
     "clients_title": "Customers served",
-    "reviews_title": "Reviews rating",
-    "accredited": "Accredited & Certified by"
+    "reviews_title": "Service catalog",
+    "catalog_label": "Confirmed services"
   },
   "oneroof": {
     "eyebrow": "ALL-IN-ONE SOLUTION",
     "title": "Everything under one roof.",
-    "description": "Truckers Choice is the only partner you need to handle truck insurance, DOT authority, registration plates, and federal compliance. We save you time, eliminate paperwork, and protect your business.",
+    "description": "Truckers Choice coordinates truck insurance, DOT authority, registration plates, permits and compliance paperwork in one connected workflow.",
     "bullet_1": "Commercial Truck Insurance tailored to your cargo",
     "bullet_2": "DOT & MC Authority registration (USDOT, BOC-3, UCR)",
     "bullet_3": "IRP Plates, Apportioned Registrations & Fuel Tax (IFTA)",
-    "bullet_4": "Full DOT Audit Compliance & Driver Testing Programs",
+    "bullet_4": "DOT audit assistance and confirmed driver-testing services",
     "cta": "Get started today"
-  },
-  "services": {
-    "eyebrow": "OUR CORE SERVICES",
-    "title": "Comprehensive Trucking Solutions",
-    "see_more": "See more",
-    "svc_1_title": "Authority & Registration",
-    "svc_1_desc": "Get your USDOT & MC numbers, BOC-3 filing, and UCR registration to start operating legally.",
-    "svc_2_title": "IRP, Plates & Titles",
-    "svc_2_desc": "Apportioned registrations, commercial plates, title transfers, and heavy vehicle tax (Form 2290).",
-    "svc_3_title": "Permits & Fuel Tax",
-    "svc_3_desc": "IFTA setup, quarter tax filings, and state-specific permits (NY HUT, KYU, NM, and temporary trip permits).",
-    "svc_4_title": "Truck Insurance",
-    "svc_4_desc": "Primary liability, cargo coverage, bobtail, and physical damage insurance tailored to your fleet.",
-    "svc_5_title": "DOT Compliance & Audits",
-    "svc_5_desc": "Complete safety program management, drug & alcohol testing (random pools), and audit preparation.",
-    "svc_6_title": "Corporations & LLCs",
-    "svc_6_desc": "Incorporate your business as a Corp or LLC, obtain your EIN/Tax ID, and set up your corporate structure."
   },
   "journey": {
     "eyebrow": "OUR ROADMAP",
@@ -73,7 +56,7 @@
     "step_3_title": "Insurance & Permits",
     "step_3_desc": "Bind custom insurance and register IRP plates & IFTA.",
     "step_4_title": "Stay in compliance",
-    "step_4_desc": "Manage drug tests, logs, and prepare for DOT audits."
+    "step_4_desc": "Organize confirmed driver paperwork, testing services and DOT audit assistance."
   },
   "packages": {
     "eyebrow": "PRICING PLANS",
@@ -91,20 +74,20 @@
     "pkg_2_title": "Small Fleet",
     "pkg_2_price": "895",
     "pkg_2_bullet_1": "Multi-Truck IRP & Fuel Tax Management",
-    "pkg_2_bullet_2": "Driver Qualification File (DQF) Setup",
+    "pkg_2_bullet_2": "Driver Applications and MVR Reports",
     "pkg_2_bullet_3": "Random Drug & Alcohol Pool Enrollment",
     "pkg_2_bullet_4": "Ongoing DOT Compliance Support",
-    "pkg_3_title": "Hotshot / Non-CDL",
+    "pkg_3_title": "Permits & Registration",
     "pkg_3_price": "395",
     "pkg_3_bullet_1": "Non-CDL Custom Authority Setup",
     "pkg_3_bullet_2": "State Specific Permit Filing",
     "pkg_3_bullet_3": "Specialized Cargo Insurance Binding",
     "pkg_3_bullet_4": "UCR & BOC-3 Registration",
-    "pkg_4_title": "Freight Broker",
+    "pkg_4_title": "Compliance Records",
     "pkg_4_price": "695",
     "pkg_4_bullet_1": "Corporate Formation (Corp/LLC)",
     "pkg_4_bullet_2": "Broker Authority (MC#) Registration",
-    "pkg_4_bullet_3": "$75,000 BMC-84 Surety Bond Setup",
+    "pkg_4_bullet_3": "Pre-Employment Testing Assistance",
     "pkg_4_bullet_4": "BOC-3 Processing & Process Agents"
   },
   "locations": {
@@ -119,8 +102,8 @@
     "get_directions": "Get Directions",
     "contact_branch": "Contact Branch",
     "medley": {
-      "name": "Medley, FL (HQ)",
-      "desc": "Our main headquarters in Medley, Florida serving the South Florida logistics corridor, Doral, and Miami. We offer complete trucking insurance and permits under one roof with 100% bilingual agents.",
+      "name": "Medley, FL",
+      "desc": "Local office serving the trucking community in Medley, Florida.",
       "services": [
         "Commercial Truck Insurance",
         "USDOT & MC Authority Setup",
@@ -132,11 +115,11 @@
     },
     "jersey_city": {
       "name": "Jersey City, NJ",
-      "desc": "Located near the Port of New York and New Jersey, our Jersey City branch specializes in intermodal container drayage compliance and local owner-operator solutions. We also coordinate UIIA insurance requirements for intermodal carriers.",
+      "desc": "Local office serving the trucking community in Jersey City, New Jersey.",
       "services": [
         "Commercial Truck Insurance",
         "USDOT & MC Authority Setup",
-        "UIIA & Port Drayage Compliance",
+        "DOT & MC Authority",
         "IRP Plates & Registrations",
         "Drug & Alcohol Testing Pool",
         "BOC-3 & UCR Registration"
@@ -144,7 +127,7 @@
     },
     "elizabeth": {
       "name": "Elizabeth, NJ",
-      "desc": "Serving the Newark/Elizabeth port area, this office provides fast local truck insurance binding, state-specific weight-distance permits, and DOT audit support. Drayage carriers can also handle UIIA insurance requirements here.",
+      "desc": "Local office serving the trucking community in Elizabeth, New Jersey.",
       "services": [
         "Commercial Truck Insurance",
         "USDOT & MC Authority Setup",
@@ -157,29 +140,29 @@
   },
   "about": {
     "title": "About Us",
-    "eyebrow": "OUR HISTORY",
-    "hero_title": "20+ Years Standing by the Trucker",
+    "eyebrow": "HOW WE WORK",
+    "hero_title": "One team for connected trucking paperwork",
     "hero_desc": "Helping commercial truckers, owner-operators, and fleets navigate authority, permits, and insurance under one roof.",
-    "timeline_title": "Our Journey",
-    "timeline_1_year": "2006",
-    "timeline_1_title": "Company Founded",
-    "timeline_1_desc": "Opened our doors in Medley, Florida, offering commercial truck insurance and authority registration to local drivers.",
-    "timeline_2_year": "2012",
-    "timeline_2_title": "Expanding to Permits & Compliance",
-    "timeline_2_desc": "Added full permit and authority registration services, becoming a true one-stop-shop for commercial trucking.",
-    "timeline_3_year": "2018",
-    "timeline_3_title": "New Jersey Offices Opened",
-    "timeline_3_desc": "Opened offices in Jersey City and Elizabeth to support truckers near the Port of NY/NJ.",
-    "timeline_4_year": "2026",
-    "timeline_4_title": "Going Digital & Bilingual",
-    "timeline_4_desc": "Relaunched our digital platform to support the modern, bilingual trucking community across the East Coast.",
+    "timeline_title": "The Connected Workflow",
+    "timeline_1_year": "01",
+    "timeline_1_title": "Understand the operation",
+    "timeline_1_desc": "Start with the business, vehicles, routes and current paperwork.",
+    "timeline_2_year": "02",
+    "timeline_2_title": "Identify applicable services",
+    "timeline_2_desc": "Connect confirmed authority, registration, permit, insurance or compliance needs.",
+    "timeline_3_year": "03",
+    "timeline_3_title": "Organize the paperwork",
+    "timeline_3_desc": "Prepare documents and next steps around one coordinated plan.",
+    "timeline_4_year": "04",
+    "timeline_4_title": "Maintain recurring records",
+    "timeline_4_desc": "Keep renewals, permits and compliance paperwork organized.",
     "values_title": "Our Core Values",
     "value_1_title": "Bilingual Support",
     "value_1_desc": "Bilingual support helps make complex trucking decisions clearer in English or Spanish.",
     "value_2_title": "One-Roof Convenience",
     "value_2_desc": "We handle truck insurance, permits, and federal DOT compliance in one single, coordinated workflow.",
     "value_3_title": "Uncompromising Integrity",
-    "value_3_desc": "With 20+ years of trusted experience, we protect your business from compliance fines and safety issues.",
+    "value_3_desc": "We separate confirmed services from unapproved claims so the guidance stays clear and responsible.",
     "trust_title": "Why Professional Truckers Trust Us",
     "trust_desc": "We coordinate insurance, permits, registrations, and compliance through one trucking-focused team.",
     "cta_title": "Ready to get on the road?",

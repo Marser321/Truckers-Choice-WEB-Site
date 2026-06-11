@@ -6,7 +6,7 @@ import { useTranslations } from "next-intl";
 import { Container } from "@/components/ui/Container";
 import { GlowButton } from "@/components/ui/GlowButton";
 import { Badge } from "@/components/ui/Badge";
-import { Phone } from "lucide-react";
+import { Files, Phone } from "lucide-react";
 import { AmbientVideo } from "@/components/ui/AmbientVideo";
 import { locations } from "@/lib/content";
 
@@ -70,30 +70,6 @@ export function Hero() {
     whileHover: isReduced ? {} : { scale: 1.05, y: -2 },
     whileTap: isReduced ? {} : { scale: 0.98 },
     transition: { type: "spring" as const, stiffness: 400, damping: 15 },
-  };
-
-  // Spring animation for stars stagger entry
-  const trustContainerVariants = {
-    hidden: {},
-    visible: {
-      transition: {
-        staggerChildren: isReduced ? 0 : 0.08,
-        delayChildren: 1.0,
-      },
-    },
-  };
-
-  const starVariants = {
-    hidden: isReduced ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: {
-        type: "spring" as const,
-        stiffness: 300,
-        damping: 15,
-      },
-    },
   };
 
   // Safe SVG background representation to avoid string escaping conflicts in JSX attributes
@@ -212,39 +188,14 @@ export function Hero() {
             </motion.div>
           </motion.div>
 
-          {/* Trust rating row with staggered star scaling */}
           <motion.div
-            variants={trustContainerVariants}
-            initial="hidden"
-            animate="visible"
-            className="flex items-center gap-2 select-none"
+            initial={isReduced ? false : { opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: isReduced ? 0 : 0.4, delay: 1 }}
+            className="catalog-pill gap-2 px-4 py-2 text-xs font-semibold"
           >
-            <div className="flex gap-0.5" aria-hidden="true">
-              {[...Array(5)].map((_, i) => (
-                <motion.svg
-                  key={i}
-                  variants={starVariants}
-                  className="w-4 h-4 fill-accent text-accent"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.787 1.4 8.168L12 18.896l-7.334 3.857 1.4-8.168L.132 9.21l8.2-1.192z" />
-                </motion.svg>
-              ))}
-            </div>
-            <motion.span
-              variants={
-                isReduced
-                  ? {}
-                  : {
-                      hidden: { opacity: 0 },
-                      visible: { opacity: 1, transition: { delay: 1.4 } },
-                    }
-              }
-              className="text-xs text-text-muted font-body font-semibold"
-            >
-              {t("trust_text")}
-            </motion.span>
+            <Files className="h-4 w-4" />
+            <span>{t("trust_text")}</span>
           </motion.div>
         </motion.div>
       </Container>

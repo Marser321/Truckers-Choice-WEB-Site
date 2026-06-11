@@ -80,7 +80,7 @@ export function HowItWorks() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,rgba(15,22,38,0.7)_0%,rgba(7,11,20,1)_100%)] z-10" />
       </div>
 
-      <Section className="relative z-10 py-24 md:py-36">
+      <Section className="relative z-10 py-24 md:py-36" background="route" backgroundPosition="center right">
         <Container className="flex flex-col gap-16">
           
           {/* Header */}

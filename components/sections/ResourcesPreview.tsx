@@ -3,12 +3,14 @@ import { ArrowRight } from "lucide-react";
 import { resources, localize } from "@/lib/content";
 import { Link } from "@/navigation";
 import { Container } from "@/components/ui/Container";
+import { SectionBackground } from "@/components/ui/SectionBackground";
 
 export async function ResourcesPreview() {
   const locale = await getLocale();
   return (
-    <section className="border-y border-white/8 bg-[#050810] py-24">
-      <Container>
+    <section className="relative overflow-hidden border-y border-white/8 bg-[#050810] py-24">
+      <SectionBackground variant="document" imagePosition="center right" />
+      <Container className="relative z-10">
         <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
           <div>
             <span className="text-xs font-bold uppercase tracking-[0.25em] text-accent">{locale === "es" ? "Sin sopa de letras" : "No alphabet soup"}</span>

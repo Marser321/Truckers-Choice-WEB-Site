@@ -1,57 +1,196 @@
 import { notFound } from "next/navigation";
-import { getLocale } from "next-intl/server";
-import { ArrowRight, Check } from "lucide-react";
-import { getService, localize, services } from "@/lib/content";
+import Image from "next/image";
+import { ArrowRight, Check, FileText } from "lucide-react";
+import {
+  getService,
+  getServiceTopics,
+  getServiceDetailsForTopic,
+  localize,
+  services,
+} from "@/lib/content";
 import { Link } from "@/navigation";
 import { InteriorHero } from "@/components/ui/InteriorHero";
 import { Container } from "@/components/ui/Container";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
+import { ExpandableSection } from "@/components/ui/ExpandableSection";
+import { ServicePagerNav } from "@/components/sections/ServicePagerNav";
+import { SectionBackground } from "@/components/ui/SectionBackground";
 
 export function generateStaticParams() {
   return services.map(({ slug }) => ({ slug }));
 }
 
-export async function generateMetadata({ params: { slug } }: { params: { slug: string } }) {
-  const locale = await getLocale();
+export async function generateMetadata({ params: { locale, slug } }: { params: { locale: string; slug: string } }) {
   const service = getService(slug);
   if (!service) return {};
-  return { title: `${localize(service.title, locale)} | Truckers Choice`, description: localize(service.description, locale) };
+  return {
+    title: `${localize(service.title, locale)} | Truckers Choice`,
+    description: localize(service.description, locale),
+  };
 }
 
-export default async function ServicePage({ params: { slug } }: { params: { slug: string } }) {
-  const locale = await getLocale();
+export default async function ServicePage({ params: { locale, slug } }: { params: { locale: string; slug: string } }) {
   const service = getService(slug);
   if (!service) notFound();
-  const schema = { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: service.faqs.map((item) => ({ "@type": "Question", name: localize(item.question, locale), acceptedAnswer: { "@type": "Answer", text: localize(item.answer, locale) } })) };
+
+  const topics = getServiceTopics(service.slug);
+  const relatedServices = service.relatedFamilySlugs
+    .map((relatedSlug) => getService(relatedSlug))
+    .filter(Boolean);
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: service.faqs.map((item) => ({
+      "@type": "Question",
+      name: localize(item.question, locale),
+      acceptedAnswer: { "@type": "Answer", text: localize(item.answer, locale) },
+    })),
+  };
 
   return (
     <main>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
-      <InteriorHero eyebrow={localize(service.title, locale)} title={localize(service.shortTitle, locale)} description={localize(service.description, locale)} image={service.painImage} />
-      <section className="bg-background py-24">
-        <Container className="grid gap-14 lg:grid-cols-12">
-          <div className="lg:col-span-5">
-            <span className="text-xs font-bold uppercase tracking-[0.25em] text-red-400">{locale === "es" ? "Por qué importa ahora" : "Why it matters now"}</span>
-            <h2 className="mt-5 text-balance font-display text-4xl font-bold leading-none text-text">{localize(service.urgency, locale)}</h2>
-            <Link href="/contact" className="mt-8 inline-flex items-center gap-2 rounded-full bg-accent px-6 py-4 text-sm font-bold text-background">{locale === "es" ? "Hablar con un especialista" : "Talk to a specialist"} <ArrowRight className="h-4 w-4" /></Link>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2 lg:col-span-7">
-            {service.includes.map((item) => <div key={item.en} className="rounded-2xl border border-white/10 bg-surface/40 p-5 text-sm text-text-muted"><Check className="mb-5 h-5 w-5 text-accent" />{localize(item, locale)}</div>)}
+
+      {/* 1 · Compact hero + breadcrumb */}
+      <InteriorHero
+        compact
+        eyebrow={locale === "es" ? "Expediente operativo" : "Operational file"}
+        title={localize(service.shortTitle, locale)}
+        description={localize(service.description, locale)}
+        image={service.painImage}
+      />
+      <section className="relative overflow-hidden bg-background pt-6 pb-2 border-b border-white/5">
+        <SectionBackground variant="route" imagePosition="center right" />
+        <Container className="relative z-10">
+          <Breadcrumbs steps={[{ label: localize(service.title, locale) }]} />
+        </Container>
+      </section>
+
+      {/* 2 · What we solve + mini process */}
+      <section className="relative overflow-hidden bg-background py-16 md:py-20">
+        <SectionBackground variant="route" imagePosition="center right" />
+        <Container className="relative z-10 max-w-4xl">
+          <span className="catalog-kicker">{locale === "es" ? "Cuando importa" : "When it matters"}</span>
+          <h2 className="mt-5 text-balance font-display text-3xl font-bold leading-tight text-text md:text-4xl">
+            {localize(service.urgency, locale)}
+          </h2>
+          <ul className="mt-7 flex flex-col gap-3">
+            {topics.map((topic) => (
+              <li key={topic.slug} className="flex items-start gap-3 text-sm leading-relaxed text-text">
+                <Check className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
+                {localize(topic.title, locale)}
+              </li>
+            ))}
+          </ul>
+          <Link
+            href={`/contact?service=${service.slug}`}
+            className="mt-8 inline-flex items-center gap-2 rounded-full bg-accent px-6 py-4 text-sm font-bold text-background shadow-glow-amber transition-transform hover:-translate-y-0.5"
+          >
+            {locale === "es" ? "Hablar con un especialista" : "Talk to a specialist"} <ArrowRight className="h-4 w-4" />
+          </Link>
+
+          <ol className="mt-12 flex flex-col gap-4 border-t border-white/8 pt-8 md:flex-row md:items-start md:gap-8">
+            {service.process.map((item, index) => (
+              <li key={item.en} className="flex items-start gap-3 md:flex-1">
+                <span className="font-display text-sm font-bold text-accent">0{index + 1}</span>
+                <span className="text-sm leading-relaxed text-text-muted">{localize(item, locale)}</span>
+              </li>
+            ))}
+          </ol>
+        </Container>
+      </section>
+
+      {/* 3 · Confirmed filings, condensed by topic */}
+      <section className="relative overflow-hidden border-t border-white/8 bg-background py-16 md:py-20">
+        <SectionBackground variant="document" imagePosition="center right" />
+        <Container className="relative z-10 max-w-4xl">
+          <span className="catalog-kicker">{locale === "es" ? "Trámites confirmados" : "Confirmed filings"}</span>
+          <div className="mt-8 flex flex-col gap-4">
+            {topics.map((topic, topicIdx) => {
+              const topicDetails = getServiceDetailsForTopic(topic);
+              return (
+                <ExpandableSection
+                  key={topic.slug}
+                  id={topic.slug}
+                  defaultOpen={topicIdx === 0}
+                  summary={
+                    <span className="flex min-w-0 items-center gap-4">
+                      {topic.painImage && (
+                        <span className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl border border-white/10">
+                          <Image src={topic.painImage} alt="" fill className="object-cover opacity-70" sizes="56px" />
+                        </span>
+                      )}
+                      <span className="min-w-0">
+                        <span className="block truncate font-display text-xl font-bold text-text">
+                          {localize(topic.title, locale)}
+                        </span>
+                        <span className="mt-1 block text-xs font-bold uppercase tracking-[0.18em] text-accent">
+                          {topicDetails.length} {locale === "es" ? "trámites" : "filings"}
+                        </span>
+                      </span>
+                    </span>
+                  }
+                >
+                  <p className="max-w-2xl text-sm leading-relaxed text-text-muted">
+                    {localize(topic.description, locale)}
+                  </p>
+                  <ul className="mt-5 divide-y divide-white/8 border-t border-white/8">
+                    {topicDetails.map((item) => (
+                      <li key={item.slug} id={item.slug} className="flex items-start gap-3 py-4 scroll-mt-28">
+                        <FileText className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
+                        <div className="min-w-0">
+                          <p className="font-display text-base font-bold text-text">{localize(item.title, locale)}</p>
+                          <p className="mt-1 text-xs leading-relaxed text-text-muted">{localize(item.whenNeeded, locale)}</p>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </ExpandableSection>
+              );
+            })}
           </div>
         </Container>
       </section>
-      <section className="border-y border-white/8 bg-[#050810] py-24">
-        <Container>
-          <span className="text-xs font-bold uppercase tracking-[0.25em] text-accent">{locale === "es" ? "Cómo funciona" : "How it works"}</span>
-          <div className="mt-10 grid gap-px overflow-hidden rounded-3xl border border-white/8 bg-white/8 md:grid-cols-3">
-            {service.process.map((item, index) => <div key={item.en} className="bg-[#080d18] p-8"><span className="font-display text-5xl font-bold text-white/10">0{index + 1}</span><h2 className="mt-16 font-display text-2xl font-bold text-text">{localize(item, locale)}</h2></div>)}
+
+      {/* 4 · FAQ */}
+      <section className="relative overflow-hidden border-t border-white/8 bg-background py-16 md:py-20">
+        <SectionBackground variant="surface" />
+        <Container className="relative z-10 max-w-4xl">
+          <h2 className="font-display text-3xl font-bold text-text md:text-4xl">
+            {locale === "es" ? "Preguntas frecuentes" : "Frequently asked questions"}
+          </h2>
+          <div className="mt-8 flex flex-col gap-4">
+            {service.faqs.map((item) => (
+              <ExpandableSection
+                key={item.question.en}
+                summary={
+                  <span className="font-display text-lg font-bold text-text">{localize(item.question, locale)}</span>
+                }
+              >
+                <p className="max-w-2xl text-sm leading-relaxed text-text-muted">{localize(item.answer, locale)}</p>
+              </ExpandableSection>
+            ))}
           </div>
         </Container>
       </section>
-      <section className="bg-background py-24">
-        <Container className="max-w-4xl">
-          <h2 className="font-display text-4xl font-bold text-text">{locale === "es" ? "Preguntas frecuentes" : "Frequently asked questions"}</h2>
-          <div className="mt-8 divide-y divide-white/8 border-y border-white/8">
-            {service.faqs.map((item) => <details key={item.question.en} className="group py-6"><summary className="cursor-pointer list-none font-display text-xl font-bold text-text">{localize(item.question, locale)}</summary><p className="mt-4 max-w-2xl text-sm leading-relaxed text-text-muted">{localize(item.answer, locale)}</p></details>)}
+
+      {/* 5 · Related + pager */}
+      <section className="relative overflow-hidden border-t border-white/8 bg-[#050810] py-16 md:py-20">
+        <SectionBackground variant="route" imagePosition="center right" />
+        <Container className="relative z-10 max-w-4xl">
+          <span className="catalog-kicker">{locale === "es" ? "Siguientes pasos relacionados" : "Related next steps"}</span>
+          <div className="mt-7 flex flex-wrap gap-3">
+            {relatedServices.map((related) => related && (
+              <Link key={related.slug} href={`/services/${related.slug}`} className="catalog-pill px-5 py-3 text-sm font-bold">
+                <Check className="mr-2 h-4 w-4" /> {localize(related.title, locale)}
+              </Link>
+            ))}
+            <Link href="/services" className="catalog-pill px-5 py-3 text-sm font-bold">
+              {locale === "es" ? "Todos los servicios" : "All services"} <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
+          </div>
+          <div className="mt-10">
+            <ServicePagerNav slug={service.slug} locale={locale} />
           </div>
         </Container>
       </section>

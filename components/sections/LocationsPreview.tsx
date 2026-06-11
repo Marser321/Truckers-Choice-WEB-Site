@@ -5,13 +5,15 @@ import { locations, localize } from "@/lib/content";
 import { Link } from "@/navigation";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
+import { SectionBackground } from "@/components/ui/SectionBackground";
 
 export async function LocationsPreview() {
   const locale = await getLocale();
 
   return (
-    <section className="relative bg-background py-24 md:py-36">
-      <Container>
+    <section className="relative overflow-hidden bg-background py-24 md:py-36">
+      <SectionBackground variant="local" imagePosition="center right" />
+      <Container className="relative z-10">
         <Reveal variant="mask-up">
           <span className="text-xs font-bold uppercase tracking-[0.25em] text-accent">{locale === "es" ? "Atención local" : "Local support"}</span>
           <h2 className="mt-4 max-w-4xl text-balance font-display text-4xl font-bold leading-none tracking-[-0.04em] text-text md:text-6xl">

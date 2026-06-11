@@ -98,13 +98,13 @@ export function HorizontalServices() {
         </Container>
         <div className="mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-5">
           {services.map((service) => (
-            <article key={service.slug} className="relative h-[520px] min-w-[88vw] snap-center overflow-hidden rounded-3xl border border-white/10 sm:min-w-[420px]">
+            <article key={service.slug} className="relative h-[440px] min-w-[88vw] snap-center overflow-hidden rounded-3xl border border-white/10 sm:min-w-[420px]">
               <Image src={service.cardImage} alt={localize(service.title, locale)} fill className="object-cover" sizes="88vw" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#050810] via-[#050810]/70 to-transparent" />
               <div className="absolute inset-x-0 bottom-0 p-6">
                 <p className="text-xs font-bold uppercase tracking-[0.2em] text-accent">{localize(service.title, locale)}</p>
                 <h3 className="mt-3 font-display text-3xl font-bold leading-none text-text">{localize(service.shortTitle, locale)}</h3>
-                <p className="mt-4 text-sm leading-relaxed text-text-muted">{localize(service.description, locale)}</p>
+                <p className="mt-4 text-sm leading-relaxed text-text-muted line-clamp-2">{localize(service.description, locale)}</p>
                 <Link href={`/services/${service.slug}`} className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-accent">
                   {locale === "es" ? "Ver servicio" : "View service"} <ArrowRight className="h-4 w-4" />
                 </Link>

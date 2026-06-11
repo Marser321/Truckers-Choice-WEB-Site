@@ -1,14 +1,16 @@
 "use client";
 
 import { useLocale } from "next-intl";
-import { Building2, Languages, Layers3, Route } from "lucide-react";
+import { Building2, Files, Languages, Layers3 } from "lucide-react";
+import { services } from "@/lib/content";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
 
 export function TrustBar() {
   const locale = useLocale();
+  const confirmedDetails = services.reduce((total, service) => total + service.details.length, 0);
   const items = [
-    { icon: Route, value: "20+", en: "Years serving truckers", es: "Años sirviendo a truckers" },
+    { icon: Files, value: String(confirmedDetails), en: "Confirmed services", es: "Servicios confirmados" },
     { icon: Building2, value: "3", en: "Offices in FL & NJ", es: "Oficinas en FL y NJ" },
     { icon: Languages, value: "EN / ES", en: "Bilingual support", es: "Atención bilingüe" },
     { icon: Layers3, value: "One roof", en: "Insurance + permits + compliance", es: "Seguro + permisos + compliance" },
