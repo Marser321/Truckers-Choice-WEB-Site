@@ -1,4 +1,4 @@
-import { getLocale } from "next-intl/server";
+import { setRequestLocale } from "next-intl/server";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { services, localize, type JourneyStage } from "@/lib/content";
@@ -15,8 +15,9 @@ const journeyStages: Array<{ stage: JourneyStage; number: string; label: { en: s
   { stage: "comply", number: "03", label: { en: "Keep records ready", es: "Mantén registros listos" } },
 ];
 
-export default async function ServicesPage() {
-  const locale = await getLocale();
+export default async function ServicesPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
   return (
     <main>
       <InteriorHero eyebrow={locale === "es" ? "Una mesa. Todo conectado." : "One desk. Everything connected."} title={locale === "es" ? "Servicios para mantener tu operación en marcha." : "Services built to keep your operation moving."} description={locale === "es" ? "Coordinamos seguros, permisos, autoridad, placas y cumplimiento para que no tengas que unir las piezas solo." : "We coordinate insurance, permits, authority, plates and compliance so you do not have to connect the pieces alone."} video={{ mp4: "/media/urban-loop.mp4", poster: "/images/media-posters/urban-loop.jpg" }} />

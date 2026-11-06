@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { setRequestLocale } from "next-intl/server";
 import Image from "next/image";
 import { ArrowRight, Check, FileText } from "lucide-react";
 import {
@@ -20,7 +21,8 @@ export function generateStaticParams() {
   return services.map(({ slug }) => ({ slug }));
 }
 
-export async function generateMetadata({ params: { locale, slug } }: { params: { locale: string; slug: string } }) {
+export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }) {
+  const { locale, slug } = await params;
   const service = getService(slug);
   if (!service) return {};
   return {
@@ -29,7 +31,9 @@ export async function generateMetadata({ params: { locale, slug } }: { params: {
   };
 }
 
-export default async function ServicePage({ params: { locale, slug } }: { params: { locale: string; slug: string } }) {
+export default async function ServicePage({ params }: { params: Promise<{ locale: string; slug: string }> }) {
+  const { locale, slug } = await params;
+  setRequestLocale(locale);
   const service = getService(slug);
   if (!service) notFound();
 
