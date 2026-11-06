@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { setRequestLocale } from "next-intl/server";
 import { Clock, MapPin, Navigation, Phone } from "lucide-react";
 import { getLocation, locations, localize } from "@/lib/content";
 import { Container } from "@/components/ui/Container";
@@ -9,7 +10,8 @@ export function generateStaticParams() {
   return locations.map(({ slug }) => ({ slug }));
 }
 
-export async function generateMetadata({ params: { locale, slug } }: { params: { locale: string; slug: string } }) {
+export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }) {
+  const { locale, slug } = await params;
   const location = getLocation(slug);
   if (!location) return {};
   return {
@@ -19,7 +21,9 @@ export async function generateMetadata({ params: { locale, slug } }: { params: {
   };
 }
 
-export default async function LocationDetailPage({ params: { locale, slug } }: { params: { locale: string; slug: string } }) {
+export default async function LocationDetailPage({ params }: { params: Promise<{ locale: string; slug: string }> }) {
+  const { locale, slug } = await params;
+  setRequestLocale(locale);
   const location = getLocation(slug);
   if (!location) notFound();
 

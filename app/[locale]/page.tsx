@@ -1,3 +1,4 @@
+import { setRequestLocale } from "next-intl/server";
 import { Hero } from "@/components/sections/Hero";
 import { TrustBar } from "@/components/sections/TrustBar";
 import { RoadStory } from "@/components/sections/RoadStory";
@@ -10,7 +11,9 @@ import { LocationsPreview } from "@/components/sections/LocationsPreview";
 import { ResourcesPreview } from "@/components/sections/ResourcesPreview";
 import { CtaBand } from "@/components/sections/CtaBand";
 
-export default function HomePage() {
+export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
   return (
     <main className="relative min-h-screen bg-background">
       <Hero />

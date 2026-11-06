@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { getLocale } from "next-intl/server";
+import { setRequestLocale } from "next-intl/server";
 import { ArrowRight, Clock, MapPin, Phone } from "lucide-react";
 import { locations, localize } from "@/lib/content";
 import { Link } from "@/navigation";
@@ -7,8 +7,9 @@ import { InteriorHero } from "@/components/ui/InteriorHero";
 import { Container } from "@/components/ui/Container";
 import { SectionBackground } from "@/components/ui/SectionBackground";
 
-export default async function LocationsIndexPage() {
-  const locale = await getLocale();
+export default async function LocationsIndexPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
 
   return (
     <main>

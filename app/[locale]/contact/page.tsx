@@ -1,4 +1,4 @@
-import { getLocale } from "next-intl/server";
+import { setRequestLocale } from "next-intl/server";
 import { Clock, Phone } from "lucide-react";
 import { locations, localize } from "@/lib/content";
 import { InteriorHero } from "@/components/ui/InteriorHero";
@@ -6,8 +6,9 @@ import { Container } from "@/components/ui/Container";
 import { QuoteWizard } from "@/components/forms/QuoteWizard";
 import { Section } from "@/components/ui/Section";
 
-export default async function ContactPage() {
-  const locale = await getLocale();
+export default async function ContactPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
   return (
     <main>
       <InteriorHero eyebrow={locale === "es" ? "Empieza la conversación" : "Start the conversation"} title={locale === "es" ? "Cuéntanos qué te está frenando." : "Tell us what is holding you back."} description={locale === "es" ? "Un formulario corto para ordenar el próximo paso. También puedes llamar directamente a cualquiera de nuestras oficinas." : "A short form to organize the next step. You can also call any of our offices directly."} image="/images/bg-contact.png" />

@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { setRequestLocale } from "next-intl/server";
 import { getResource, localize, resources } from "@/lib/content";
 import { InteriorHero } from "@/components/ui/InteriorHero";
 import { Container } from "@/components/ui/Container";
@@ -8,7 +9,9 @@ export function generateStaticParams() {
   return resources.map(({ slug }) => ({ slug }));
 }
 
-export default async function ResourcePage({ params: { locale, slug } }: { params: { locale: string; slug: string } }) {
+export default async function ResourcePage({ params }: { params: Promise<{ locale: string; slug: string }> }) {
+  const { locale, slug } = await params;
+  setRequestLocale(locale);
   const resource = getResource(slug);
   if (!resource) notFound();
   return (
